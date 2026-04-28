@@ -5,8 +5,8 @@
 	"scripts": {
 		"dev": "next dev",
 		"build": "next build",
-		"start": "next start",,
-        "test": "echo \"No tests yet\"",
+		"start": "next start",
+		"test": "echo \"No tests yet\"",
 		"lint": "next lint"
 	},
 	"dependencies": {
