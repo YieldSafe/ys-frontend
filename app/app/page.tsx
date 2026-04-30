@@ -12,7 +12,12 @@ const MoonIcon = () => (
 type Tab = "deposit" | "withdraw" | "rewards" | "stats";
 
 export default function AppPage() {
-  const [theme, setTheme] = useState("dark");
+  const [theme, setTheme] = useState(() => {
+    if (typeof window !== "undefined") {
+      return localStorage.getItem("theme") ?? "dark";
+    }
+    return "dark";
+  });
   const [connected, setConnected] = useState(false);
   const [tab, setTab] = useState<Tab>("deposit");
   const [depositAmt, setDepositAmt] = useState("");
@@ -20,7 +25,12 @@ export default function AppPage() {
   const [approved, setApproved] = useState(false);
   const [toasts, setToasts] = useState<{ id: number; type: string; msg: string }[]>([]);
 
-  useEffect(() => { document.documentElement.setAttribute("data-theme", theme); }, [theme]);
+  useEffect(() => {
+    document.documentElement.setAttribute("data-theme", theme);
+    if (typeof window !== "undefined") {
+      localStorage.setItem("theme", theme);
+    }
+  }, [theme]);
 
   const addToast = (type: string, msg: string) => {
     const id = Date.now();

@@ -50,8 +50,18 @@ function FAQ({ q, a }: { q: string; a: string }) {
 }
 
 export default function HomePage() {
-  const [theme, setTheme] = useState("dark");
-  useEffect(() => { document.documentElement.setAttribute("data-theme", theme); }, [theme]);
+  const [theme, setTheme] = useState(() => {
+    if (typeof window !== "undefined") {
+      return localStorage.getItem("theme") ?? "dark";
+    }
+    return "dark";
+  });
+  useEffect(() => {
+    document.documentElement.setAttribute("data-theme", theme);
+    if (typeof window !== "undefined") {
+      localStorage.setItem("theme", theme);
+    }
+  }, [theme]);
   const r1 = useReveal(), r2 = useReveal(), r3 = useReveal(), r4 = useReveal(), r5 = useReveal(), r6 = useReveal(), r7 = useReveal(), r8 = useReveal();
 
   return (

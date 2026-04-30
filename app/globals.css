@@ -31,6 +31,8 @@
   --text-micro: #8896AE;
   --glow-teal: rgba(0, 137, 123, 0.12);
   --glow-gold: rgba(184, 134, 11, 0.1);
+  /* Light theme hero background */
+  --hero-bg: radial-gradient(ellipse at center, #F5FAFF 0%, #E0E8FF 70%);
 }
 
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
@@ -250,7 +252,7 @@ a { color: var(--accent-teal); text-decoration: none; }
 }
 .hero-bg {
   position: absolute; inset: 0; z-index: 0;
-  background: radial-gradient(ellipse at center, #0E1520 0%, #07090F 70%);
+  background: var(--hero-bg);
 }
 .hero-blob1, .hero-blob2 {
   position: absolute; border-radius: 50%; filter: blur(80px); opacity: 0.3;
