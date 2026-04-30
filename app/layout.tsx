@@ -3,8 +3,8 @@ import { ReactNode } from "react";
 import Providers from "./providers";
 
 export const metadata = {
-  title: "YieldSave",
-  description: "Auto-yield savings vault",
+  title: "YieldSafe — Your savings, always earning",
+  description: "Non-custodial DeFi savings vault on Ethereum. Deposit USDC, earn yield automatically via Aave V3. Withdraw anytime.",
 };
 
 export default function RootLayout({
@@ -13,7 +13,7 @@ export default function RootLayout({
   children: ReactNode;
 }) {
   return (
-    <html lang="en">
+    <html lang="en" data-scroll-behavior="smooth" suppressHydrationWarning>
       <body>
         <Providers>{children}</Providers>
       </body>
