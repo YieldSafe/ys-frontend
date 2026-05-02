@@ -1,7 +1,7 @@
 import { createAppKit } from "@reown/appkit/react";
 import { EthersAdapter } from "@reown/appkit-adapter-ethers";
 import {
-  sepolia,
+  baseSepolia,
   type AppKitNetwork,
 } from "@reown/appkit/networks";
 
@@ -13,15 +13,15 @@ if (!projectId) {
   );
 }
 
-export const EthereumSepolia: AppKitNetwork = {
-  ...sepolia,
-  id: 11155111,
+export const BaseSepolia: AppKitNetwork = {
+  ...baseSepolia,
+  id: 84532,
   chainNamespace: "eip155",
-  caipNetworkId: "eip155:11155111",
+  caipNetworkId: "eip155:84532",
 };
 
 // 2. Set the networks
-const networks: [AppKitNetwork, ...AppKitNetwork[]] = [EthereumSepolia];
+const networks: [AppKitNetwork, ...AppKitNetwork[]] = [BaseSepolia];
 
 // 3. Create a metadata object - optional
 const metadata = {
@@ -39,7 +39,7 @@ export const appkit = createAppKit({
   projectId,
   allowUnsupportedChain: false,
   allWallets: "SHOW",
-  defaultNetwork: EthereumSepolia,
+  defaultNetwork: BaseSepolia,
   enableEIP6963: true,
   features: {
     analytics: true,
@@ -49,4 +49,4 @@ export const appkit = createAppKit({
   },
 });
 
-appkit.switchNetwork(sepolia);
+appkit.switchNetwork(baseSepolia);

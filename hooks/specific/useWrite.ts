@@ -28,6 +28,7 @@ export const useWriteVault = () => {
         const receipt = await tx.wait();
         return receipt?.status === 1;
       } catch (error) {
+        console.error("Deposit error:", error);
         toast.error(await decodeError(error));
         return false;
       } finally {
@@ -54,6 +55,7 @@ export const useWriteVault = () => {
         const receipt = await tx.wait();
         return receipt?.status === 1;
       } catch (error) {
+        console.error("Withdraw error:", error);
         toast.error(await decodeError(error));
         return false;
       } finally {

@@ -22,8 +22,13 @@ export const useUsdcBalance = () => {
 
     try {
       setIsLoadingUsdcBalance(true);
-      return (await usdcContract.balanceOf(address)) as bigint;
+      const balance = await usdcContract.balanceOf(address);
+      console.log("balance", 66);
+      
+      return balance as bigint;
     } catch (error) {
+      console.log("error",error);
+      
       toast.error(await decodeError(error));
       return null;
     } finally {

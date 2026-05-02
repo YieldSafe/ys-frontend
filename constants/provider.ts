@@ -6,7 +6,7 @@ const rpcUrl =
 
 if (!rpcUrl) {
   throw new Error(
-    "Missing NEXT_PUBLIC_SEPOLIA_RPC_URL (or NEXT_PUBLIC_LISK_TESTNET_RPC_URL).",
+    "Missing RPC URL environment variable. Please check your .env file.",
   );
 }
 

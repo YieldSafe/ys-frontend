@@ -4,6 +4,8 @@ import { toast } from "react-toastify";
 import { useDecodedError } from "../useDecodedError";
 import { useYieldSaveContract } from "../useContract";
 
+
+
 export const useReadVault = () => {
   const vaultContract = useYieldSaveContract();
   const { address } = useAppKitAccount();
@@ -61,6 +63,8 @@ export const useReadVault = () => {
       setIsLoading(true);
       return (await vaultContract.getUserBalance(address)) as bigint;
     } catch (error) {
+      console.log("error", error);
+      
       if (
         typeof error === "object" &&
         error !== null &&
@@ -72,6 +76,7 @@ export const useReadVault = () => {
         );
         return null;
       }
+      
       toast.error(await decodeError(error));
       return null;
     } finally {
@@ -99,12 +104,55 @@ export const useReadVault = () => {
     [decodeError, vaultContract],
   );
 
+  const previewDeposit = useCallback(
+    async (amount: bigint): Promise<bigint | null> => {
+      if (!vaultContract) {
+        toast.error("Vault contract not found");
+        return null;
+      }
+
+      try {
+        setIsLoading(true);
+        return (await vaultContract.previewDeposit(amount)) as bigint;
+      } catch (error) {
+        toast.error(await decodeError(error));
+        return null;
+      } finally {
+        setIsLoading(false);
+      }
+    },
+    [decodeError, vaultContract],
+  );
+
+  const getUserDeposits = useCallback(async (): Promise<bigint | null> => {
+    if (!vaultContract) {
+      toast.error("Vault contract not found");
+      return null;
+    }
+    if (!address) {
+      toast.error("Wallet not connected");
+      return null;
+    }
+
+    try {
+      setIsLoading(true);
+      return (await vaultContract.userDeposits(address)) as bigint;
+    } catch (error) {
+      toast.error(await decodeError(error));
+      return null;
+    } finally {
+      setIsLoading(false);
+    }
+  }, [address, decodeError, vaultContract]);
+
   return {
     getVaultBalance,
     getUserShares,
     getUserBalance,
+    getUserDeposits,
     isLoading,
     previewWithdraw,
+    previewDeposit,
   };
 };
 
