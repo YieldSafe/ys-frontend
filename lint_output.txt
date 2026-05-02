@@ -1,0 +1,76 @@
+
+/home/solodev/Documents/ys-frontend/app/app/page.tsx
+  45:32  warning  'isLoadingUserDeposits' is assigned a value but never used                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                @typescript-eslint/no-unused-vars
+  77:5   error    Error: Calling setState synchronously within an effect can trigger cascading renders
+
+Effects are intended to synchronize state between React and external systems such as manually updating the DOM, state management libraries, or other platform APIs. In general, the body of an effect should do one or both of the following:
+* Update external systems with the latest state from React.
+* Subscribe for updates from some external system, calling setState in a callback function when external state changes.
+
+Calling setState synchronously within an effect body causes cascading renders that can hurt performance, and is not recommended. (https://react.dev/learn/you-might-not-need-an-effect).
+
+/home/solodev/Documents/ys-frontend/app/app/page.tsx:77:5
+  75 |
+  76 |   useEffect(() => {
+> 77 |     refreshData();
+     |     ^^^^^^^^^^^ Avoid calling setState() directly within an effect
+  78 |   }, [refreshData]);
+  79 |
+  80 |   useEffect(() => {                                                                                                                                          react-hooks/set-state-in-effect
+  82:16  error    Error: Calling setState synchronously within an effect can trigger cascading renders
+
+Effects are intended to synchronize state between React and external systems such as manually updating the DOM, state management libraries, or other platform APIs. In general, the body of an effect should do one or both of the following:
+* Update external systems with the latest state from React.
+* Subscribe for updates from some external system, calling setState in a callback function when external state changes.
+
+Calling setState synchronously within an effect body causes cascading renders that can hurt performance, and is not recommended. (https://react.dev/learn/you-might-not-need-an-effect).
+
+/home/solodev/Documents/ys-frontend/app/app/page.tsx:82:16
+  80 |   useEffect(() => {
+  81 |     const saved = localStorage.getItem("theme");
+> 82 |     if (saved) setTheme(saved);
+     |                ^^^^^^^^ Avoid calling setState() directly within an effect
+  83 |     else if (window.matchMedia("(prefers-color-scheme: dark)").matches)
+  84 |       setTheme("dark");
+  85 |   }, []);  react-hooks/set-state-in-effect
+
+/home/solodev/Documents/ys-frontend/components/Deposit/DepositForm.tsx
+  35:36  error    Error: Calling setState synchronously within an effect can trigger cascading renders
+
+Effects are intended to synchronize state between React and external systems such as manually updating the DOM, state management libraries, or other platform APIs. In general, the body of an effect should do one or both of the following:
+* Update external systems with the latest state from React.
+* Subscribe for updates from some external system, calling setState in a callback function when external state changes.
+
+Calling setState synchronously within an effect body causes cascading renders that can hurt performance, and is not recommended. (https://react.dev/learn/you-might-not-need-an-effect).
+
+/home/solodev/Documents/ys-frontend/components/Deposit/DepositForm.tsx:35:36
+  33 |   useEffect(() => {
+  34 |     if (!depositAmt || !isConnected) {
+> 35 |       if (depositPreview !== null) setDepositPreview(null);
+     |                                    ^^^^^^^^^^^^^^^^^ Avoid calling setState() directly within an effect
+  36 |       return;
+  37 |     }
+  38 |     const assets = parseUnits(depositAmt, USDC_DECIMALS);  react-hooks/set-state-in-effect
+  40:6   warning  React Hook useEffect has a missing dependency: 'depositPreview'. Either include it or remove the dependency array                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                              react-hooks/exhaustive-deps
+
+/home/solodev/Documents/ys-frontend/components/Withdraw/WithdrawForm.tsx
+  28:37  error    Error: Calling setState synchronously within an effect can trigger cascading renders
+
+Effects are intended to synchronize state between React and external systems such as manually updating the DOM, state management libraries, or other platform APIs. In general, the body of an effect should do one or both of the following:
+* Update external systems with the latest state from React.
+* Subscribe for updates from some external system, calling setState in a callback function when external state changes.
+
+Calling setState synchronously within an effect body causes cascading renders that can hurt performance, and is not recommended. (https://react.dev/learn/you-might-not-need-an-effect).
+
+/home/solodev/Documents/ys-frontend/components/Withdraw/WithdrawForm.tsx:28:37
+  26 |   useEffect(() => {
+  27 |     if (!withdrawAmt || !isConnected) {
+> 28 |       if (withdrawPreview !== null) setWithdrawPreview(null);
+     |                                     ^^^^^^^^^^^^^^^^^^ Avoid calling setState() directly within an effect
+  29 |       return;
+  30 |     }
+  31 |     const shares = parseUnits(withdrawAmt, USDC_DECIMALS);  react-hooks/set-state-in-effect
+  33:6   warning  React Hook useEffect has a missing dependency: 'withdrawPreview'. Either include it or remove the dependency array                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     react-hooks/exhaustive-deps
+
+✖ 7 problems (4 errors, 3 warnings)
+
