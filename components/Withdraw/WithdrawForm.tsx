@@ -56,7 +56,7 @@ export const WithdrawForm = ({
   const infoRow = "flex justify-between items-center py-2";
 
   return (
-    <div className="bg-[var(--bg-surface)] border border-[var(--border)] rounded-2xl p-6 shadow-sm">
+    <div className="bg-[var(--bg-surface)] border border-[var(--border)] rounded-2xl p-4 sm:p-6 shadow-sm">
       <div className="flex justify-between items-center mb-6">
         <h3 className="font-display text-xl font-bold">Withdraw Assets</h3>
         <div className="text-xs font-mono text-[var(--text-muted)] bg-[var(--bg-elevated)] px-2 py-1 rounded">
@@ -68,7 +68,7 @@ export const WithdrawForm = ({
         <input
           type="number"
           placeholder="0.00"
-          className="w-full bg-[var(--bg-elevated)] border border-[var(--border)] rounded-xl px-4 py-4 text-2xl font-mono focus:outline-none focus:border-gold transition-all pr-24"
+          className="w-full bg-[var(--bg-elevated)] border border-[var(--border)] rounded-xl px-4 py-3 md:py-4 text-xl md:text-2xl font-mono focus:outline-none focus:border-gold transition-all pr-24"
           value={withdrawAmt}
           onChange={(e) => setWithdrawAmt(e.target.value)}
         />
@@ -134,7 +134,7 @@ export const WithdrawForm = ({
       </div>
 
       <button
-        className="w-full py-4 rounded-xl bg-transparent text-gold border-2 border-gold font-bold text-lg cursor-pointer transition-all hover:bg-orange-500/5 disabled:opacity-50 disabled:cursor-not-allowed"
+        className="w-full py-3 md:py-4 rounded-xl bg-transparent text-gold border-2 border-gold font-bold text-base md:text-lg cursor-pointer transition-all hover:bg-orange-500/5 disabled:opacity-50 disabled:cursor-not-allowed"
         onClick={handleWithdraw}
         disabled={isWithdrawing || !withdrawAmt || parseFloat(withdrawAmt) <= 0}
       >

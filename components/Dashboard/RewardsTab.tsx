@@ -24,8 +24,8 @@ export const RewardsTab = ({
       : BigInt(0);
 
   return (
-    <div className="max-w-[500px] mx-auto px-6 py-12">
-      <div className="bg-[var(--bg-surface)] border border-[var(--border)] rounded-2xl p-8 text-center shadow-sm relative overflow-hidden">
+    <div className="max-w-[500px] mx-auto px-4 md:px-6 py-8 md:py-12">
+      <div className="bg-[var(--bg-surface)] border border-[var(--border)] rounded-2xl p-5 md:p-8 text-center shadow-sm relative overflow-hidden">
         <div className="absolute -top-10 -right-10 w-32 h-32 bg-teal opacity-5 rounded-full blur-2xl" />
         <div className="w-16 h-16 bg-[var(--glow-teal)] rounded-2xl flex items-center justify-center text-teal mx-auto mb-6">
           <svg
@@ -44,11 +44,11 @@ export const RewardsTab = ({
         <p className="text-[var(--text-muted)] text-sm mb-8">
           Rewards are automatically compounded into your share balance.
         </p>
-        <div className="bg-[var(--bg-elevated)] rounded-xl p-6 mb-6">
+        <div className="bg-[var(--bg-elevated)] rounded-xl p-4 md:p-6 mb-6">
           <div className="text-[var(--text-micro)] uppercase tracking-wider font-semibold mb-2">
             Accrued Yield (Live)
           </div>
-          <div className="font-display text-4xl font-extrabold text-teal mb-1">
+          <div className="font-display text-3xl md:text-4xl font-extrabold text-teal mb-1">
             {fmt(accruedYield)}{" "}
             <span className="text-lg font-body font-normal">USDC</span>
           </div>

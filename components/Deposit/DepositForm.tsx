@@ -85,7 +85,7 @@ export const DepositForm = ({
   const infoRow = "flex justify-between items-center py-2";
 
   return (
-    <div className="bg-[var(--bg-surface)] border border-[var(--border)] rounded-2xl p-6 shadow-sm">
+    <div className="bg-[var(--bg-surface)] border border-[var(--border)] rounded-2xl p-4 sm:p-6 shadow-sm">
       <div className="flex justify-between items-center mb-6">
         <h3 className="font-display text-xl font-bold">Deposit USDC</h3>
         <div className="text-xs font-mono text-[var(--text-muted)] bg-[var(--bg-elevated)] px-2 py-1 rounded">
@@ -97,7 +97,7 @@ export const DepositForm = ({
         <input
           type="number"
           placeholder="0.00"
-          className="w-full bg-[var(--bg-elevated)] border border-[var(--border)] rounded-xl px-4 py-4 text-2xl font-mono focus:outline-none focus:border-teal transition-all pr-20"
+          className="w-full bg-[var(--bg-elevated)] border border-[var(--border)] rounded-xl px-4 py-3 md:py-4 text-xl md:text-2xl font-mono focus:outline-none focus:border-teal transition-all pr-20"
           value={depositAmt}
           onChange={(e) => setDepositAmt(e.target.value)}
         />
@@ -146,7 +146,7 @@ export const DepositForm = ({
 
       {needsApproval ? (
         <button
-          className="w-full py-4 rounded-xl bg-teal text-white font-bold text-lg cursor-pointer border-none transition-all hover:shadow-[0_0_20px_rgba(0,222,200,0.3)] disabled:opacity-50 disabled:cursor-not-allowed"
+          className="w-full py-3 md:py-4 rounded-xl bg-teal text-white font-bold text-base md:text-lg cursor-pointer border-none transition-all hover:shadow-[0_0_20px_rgba(0,222,200,0.3)] disabled:opacity-50 disabled:cursor-not-allowed"
           onClick={handleApprove}
           disabled={isApproving || !depositAmt || parseFloat(depositAmt) <= 0}
         >
@@ -154,7 +154,7 @@ export const DepositForm = ({
         </button>
       ) : (
         <button
-          className="w-full py-4 rounded-xl bg-teal text-white font-bold text-lg cursor-pointer border-none transition-all hover:shadow-[0_0_20px_rgba(0,222,200,0.3)] disabled:opacity-50 disabled:cursor-not-allowed"
+          className="w-full py-3 md:py-4 rounded-xl bg-teal text-white font-bold text-base md:text-lg cursor-pointer border-none transition-all hover:shadow-[0_0_20px_rgba(0,222,200,0.3)] disabled:opacity-50 disabled:cursor-not-allowed"
           onClick={handleDeposit}
           disabled={isDepositing || !depositAmt || parseFloat(depositAmt) <= 0}
         >
