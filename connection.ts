@@ -5,8 +5,7 @@ import {
   type AppKitNetwork,
 } from "@reown/appkit/networks";
 
-// 1. Get projectId
-const projectId = process.env.NEXT_PUBLIC_APPKIT_PROJECT_ID;
+const projectId = process.env.NEXT_PUBLIC_APPKIT_PROJECT_ID || "default_project_id";
 if (!projectId) {
   throw new Error(
     "Missing NEXT_PUBLIC_APPKIT_PROJECT_ID. Set it in your .env file.",
