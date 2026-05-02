@@ -46,9 +46,9 @@ export const AppNavbar = ({
     <nav className="fixed top-0 left-0 right-0 z-[100] flex items-center px-8 h-[60px] bg-[var(--bg-nav-app)] backdrop-blur-[14px] border-b border-[var(--border)] max-md:px-4">
       <Link
         href="/"
-        className="font-display font-extrabold text-xl text-[var(--text-primary)] flex items-center gap-2 no-underline mr-8"
+        className="font-display font-extrabold text-xl text-[var(--text-primary)] flex items-center gap-2 no-underline mr-2 md:mr-8"
       >
-        <Logo /> YieldSafe
+        <Logo /> <span className="hidden sm:inline">YieldSafe</span>
       </Link>
 
       <div className="flex items-center gap-0 h-full">
@@ -108,15 +108,15 @@ export const AppNavbar = ({
         )}
       </div>
 
-      <div className="ml-auto flex items-center gap-3">
+      <div className="ml-auto flex items-center gap-2 md:gap-3">
         {isConnected && address ? (
           <>
-            <div className="flex items-center gap-2 bg-[var(--bg-elevated)] border border-[var(--border)] rounded-full px-3 py-[0.4rem] font-mono text-sm text-[var(--text-primary)]">
+            <div className="flex items-center gap-2 bg-[var(--bg-elevated)] border border-[var(--border)] rounded-full px-2 md:px-3 py-[0.4rem] font-mono text-xs md:text-sm text-[var(--text-primary)]">
               <span className="w-2 h-2 rounded-full bg-green-500" />
               {shortAddr(address)}
             </div>
             <button
-              className="inline-flex items-center gap-2 px-[0.9rem] py-[0.35rem] rounded-full bg-transparent text-teal border-[1.5px] border-teal text-xs font-semibold cursor-pointer transition-all hover:bg-[var(--glow-teal)]"
+              className="hidden sm:inline-flex items-center gap-2 px-[0.9rem] py-[0.35rem] rounded-full bg-transparent text-teal border-[1.5px] border-teal text-xs font-semibold cursor-pointer transition-all hover:bg-[var(--glow-teal)]"
               onClick={() => open()}
             >
               Disconnect
@@ -124,10 +124,10 @@ export const AppNavbar = ({
           </>
         ) : (
           <button
-            className="inline-flex items-center gap-2 px-5 py-2 rounded-full bg-teal text-white font-semibold text-sm cursor-pointer border-none transition-all hover:shadow-[0_0_30px_rgba(0,222,200,0.4)]"
+            className="inline-flex items-center gap-2 px-3 md:px-5 py-1.5 md:py-2 rounded-full bg-teal text-white font-semibold text-xs md:text-sm cursor-pointer border-none transition-all hover:shadow-[0_0_30px_rgba(0,222,200,0.4)]"
             onClick={() => open()}
           >
-            Connect Wallet
+            Connect
           </button>
         )}
         <button

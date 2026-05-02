@@ -19,7 +19,7 @@ export const ActionTabs = ({ activeTab, setActiveTab }: ActionTabsProps) => {
       {tabs.map((t) => (
         <button
           key={t.id}
-          className={`px-8 py-2.5 rounded-xl text-sm font-bold transition-all ${
+          className={`px-4 sm:px-6 md:px-8 py-2 md:py-2.5 rounded-xl text-xs md:text-sm font-bold transition-all ${
             activeTab === t.id
               ? "bg-[var(--bg-surface)] text-teal shadow-sm"
               : "text-[var(--text-micro)] hover:text-[var(--text-muted)]"

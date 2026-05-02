@@ -110,7 +110,7 @@ export default function HomePage() {
   return (
     <>
       {/* Navbar */}
-      <nav className="fixed top-0 left-0 right-0 z-[100] flex items-center justify-between px-8 py-4 bg-[var(--bg-nav)] backdrop-blur-[12px] border-b border-[var(--border)]">
+      <nav className="fixed top-0 left-0 right-0 z-[100] flex items-center justify-between px-4 md:px-8 py-4 bg-[var(--bg-nav)] backdrop-blur-[12px] border-b border-[var(--border)]">
         <div className="font-display font-extrabold text-xl text-[var(--text-primary)] flex items-center gap-2">
           <svg width="28" height="28" viewBox="0 0 40 40">
             <path d="M20 4 L34 14 L34 30 Q34 36 20 38 Q6 36 6 30 L6 14 Z" fill="none" stroke="var(--accent-teal)" strokeWidth="2.5"/>
@@ -118,10 +118,12 @@ export default function HomePage() {
           </svg>
           YieldSafe
         </div>
-        <div className="flex items-center gap-4">
-          <a href="#how" className="text-[var(--text-muted)] text-sm hover:text-teal transition-colors">How it works</a>
-          <a href="#stats" className="text-[var(--text-muted)] text-sm hover:text-teal transition-colors">Stats</a>
-          <a href="#faq" className="text-[var(--text-muted)] text-sm hover:text-teal transition-colors">FAQ</a>
+        <div className="flex items-center gap-3 md:gap-4">
+          <div className="hidden md:flex items-center gap-4 mr-2">
+            <a href="#how" className="text-[var(--text-muted)] text-sm hover:text-teal transition-colors">How it works</a>
+            <a href="#stats" className="text-[var(--text-muted)] text-sm hover:text-teal transition-colors">Stats</a>
+            <a href="#faq" className="text-[var(--text-muted)] text-sm hover:text-teal transition-colors">FAQ</a>
+          </div>
           {isConnected ? (
             <div className="flex items-center gap-2 bg-[var(--bg-elevated)] border border-[var(--border)] rounded-full px-3 py-1.5 font-mono text-xs text-[var(--text-primary)]">
               <span className="w-2 h-2 rounded-full bg-green-500" />
@@ -159,16 +161,16 @@ export default function HomePage() {
             style={{ background: "radial-gradient(circle, rgba(12,16,24,0.8), transparent 70%)" }} />
           <div className="hero-noise" />
         </div>
-        <div className="relative z-[2] flex items-center gap-16 w-full max-w-[1200px] mx-auto px-8">
-          <div className="flex-[0_0_58%]">
+        <div className="relative z-[2] flex flex-col lg:flex-row items-center gap-10 lg:gap-16 w-full max-w-[1200px] mx-auto px-4 md:px-8 text-center lg:text-left mt-8 lg:mt-0">
+          <div className="w-full lg:flex-[0_0_58%]">
             <p className="text-xs uppercase tracking-[0.15em] text-[var(--text-muted)] font-medium mb-4">Non-custodial • Powered by Aave V3</p>
-            <h1 className="font-display font-extrabold leading-[1.05] mb-5 text-[clamp(2.5rem,5vw,5.5rem)]">
-              Your savings,<br />always earning.
+            <h1 className="font-display font-extrabold leading-[1.05] mb-5 text-[clamp(2.5rem,8vw,5.5rem)]">
+              Your savings,<br className="hidden lg:block" />always earning.
             </h1>
-            <p className="text-xl text-[var(--text-muted)] mb-8 max-w-[500px]">
+            <p className="text-lg md:text-xl text-[var(--text-muted)] mb-8 max-w-[500px] mx-auto lg:mx-0">
               Deposit USDC. Earn DeFi yield automatically. Withdraw any time.
             </p>
-            <div className="flex gap-4 mb-10 flex-wrap">
+            <div className="flex gap-4 mb-10 flex-col sm:flex-row justify-center lg:justify-start">
               <Link href="/app">
                 <button className="inline-flex items-center gap-2 px-6 md:px-10 py-3 md:py-4 rounded-full bg-teal text-white font-semibold text-base md:text-[1.1rem] cursor-pointer border-none transition-all duration-300 hover:shadow-[0_0_30px_rgba(0,222,200,0.4)] hover:-translate-y-px">
                   Get Started →
@@ -180,7 +182,7 @@ export default function HomePage() {
                 </button>
               </a>
             </div>
-            <div className="flex gap-4 flex-wrap">
+            <div className="flex gap-4 flex-wrap justify-center lg:justify-start">
               <div className="bg-[var(--bg-surface)] border border-[var(--border)] rounded-xl p-4 px-6 min-w-[150px] shadow-[-4px_0_16px_var(--glow-teal)]">
                 <div className="font-display text-[1.75rem] font-extrabold text-teal"><CountUp end={4.8} suffix="%" /></div>
                 <div className="text-xs text-[var(--text-muted)] mt-1">Annual Percentage Rate</div>
@@ -201,7 +203,7 @@ export default function HomePage() {
               </div>
             </div>
           </div>
-          <div className="flex-1 flex justify-center items-center">
+          <div className="w-full lg:flex-1 flex justify-center items-center mt-12 lg:mt-0">
             <div className="relative w-[280px] h-[280px] animate-floatBreath">
               <div className="absolute w-full h-full rounded-full border border-dashed border-[var(--border)] animate-orbit">
                 <div className="absolute w-9 h-9 rounded-full bg-gold text-white text-xs font-bold flex items-center justify-center font-mono shadow-[0_0_12px_var(--glow-gold)] top-[-18px] left-1/2 -translate-x-1/2">$</div>
@@ -217,7 +219,7 @@ export default function HomePage() {
 
       {/* How It Works */}
       <section id="how" className="py-24" ref={r1}>
-        <div className="max-w-[1200px] mx-auto px-8 reveal" ref={r2}>
+        <div className="max-w-[1200px] mx-auto px-4 md:px-8 reveal" ref={r2}>
           <h2 className="font-display text-[clamp(2rem,4vw,3.5rem)] mb-3">Simple by design.</h2>
           <p className="text-[var(--text-muted)] text-xl mb-0">Complex DeFi, abstracted away.</p>
           <div className="flex gap-8 items-stretch relative mt-12 max-md:flex-col">
@@ -244,7 +246,7 @@ export default function HomePage() {
 
       {/* Stats */}
       <section id="stats" className="py-24 bg-[var(--bg-surface)]">
-        <div className="max-w-[1200px] mx-auto px-8 reveal" ref={r3}>
+        <div className="max-w-[1200px] mx-auto px-4 md:px-8 reveal" ref={r3}>
           <div className="bg-[var(--bg-surface)] border border-[var(--border)] rounded-xl">
             <div className="flex justify-between items-center px-6 py-5 border-b border-[var(--border)]">
               <h2 className="text-xl font-semibold">Protocol Statistics</h2>
@@ -275,7 +277,7 @@ export default function HomePage() {
 
       {/* Fee Transparency */}
       <section className="py-24">
-        <div className="max-w-[1200px] mx-auto px-8 reveal" ref={r4}>
+        <div className="max-w-[1200px] mx-auto px-4 md:px-8 reveal" ref={r4}>
           <h2 className="font-display text-[clamp(2rem,4vw,3.5rem)] mb-3">We only earn when you earn.</h2>
           <div className="grid grid-cols-2 gap-12 mt-12 items-start max-md:grid-cols-1">
             <div className="bg-[var(--bg-elevated)] border border-[var(--border)] rounded-xl p-8 font-mono text-[0.95rem] leading-[2.2]">
@@ -305,7 +307,7 @@ export default function HomePage() {
 
       {/* Comparison */}
       <section className="py-24 bg-[var(--bg-surface)]">
-        <div className="max-w-[1200px] mx-auto px-8 reveal" ref={r5}>
+        <div className="max-w-[1200px] mx-auto px-4 md:px-8 reveal" ref={r5}>
           <h2 className="font-display text-[clamp(2rem,4vw,3.5rem)] mb-3">Why YieldSafe?</h2>
           <div className="overflow-x-auto">
             <table className="compare-table w-full border-collapse mt-8">
@@ -340,7 +342,7 @@ export default function HomePage() {
 
       {/* Security */}
       <section className="py-24">
-        <div className="max-w-[1200px] mx-auto px-8 reveal" ref={r6}>
+        <div className="max-w-[1200px] mx-auto px-4 md:px-8 reveal" ref={r6}>
           <h2 className="font-display text-[clamp(2rem,4vw,3.5rem)] mb-3 text-center">Trustless by architecture.</h2>
           <p className="text-[var(--text-muted)] text-xl text-center mb-0">The team can&apos;t touch your funds. The code is law.</p>
           <div className="grid grid-cols-3 gap-6 mt-12 max-md:grid-cols-1">
@@ -364,7 +366,7 @@ export default function HomePage() {
 
       {/* FAQ */}
       <section id="faq" className="py-24 bg-[var(--bg-surface)]">
-        <div className="max-w-[1200px] mx-auto px-8 reveal" ref={r7}>
+        <div className="max-w-[1200px] mx-auto px-4 md:px-8 reveal" ref={r7}>
           <h2 className="font-display text-[clamp(2rem,4vw,3.5rem)] mb-3">Questions, answered.</h2>
           <div className="mt-8 max-w-[720px]">
             <FAQ q="Is my principal ever at risk from fees?" a="Never. The 5% fee applies exclusively to yield earned. Your original deposit is always returned in full, regardless of how long you keep funds in the vault." />
@@ -378,11 +380,11 @@ export default function HomePage() {
 
       {/* Final CTA */}
       <section className="text-center py-24 reveal" ref={r8}>
-        <div className="max-w-[1200px] mx-auto px-8">
+        <div className="max-w-[1200px] mx-auto px-4 md:px-8">
           <h2 className="font-display text-[clamp(2rem,4vw,3rem)] mb-4">Start earning in under 2 minutes.</h2>
           <p className="text-[var(--text-muted)] mb-8 text-xl">Connect your wallet. Deposit USDC. Done.</p>
           <Link href="/app">
-            <button className="inline-flex items-center gap-2 px-10 py-4 rounded-full bg-teal text-white font-semibold text-[1.1rem] cursor-pointer border-none transition-all duration-300 hover:shadow-[0_0_30px_rgba(0,222,200,0.4)] hover:-translate-y-px">
+            <button className="inline-flex items-center gap-2 px-6 md:px-10 py-3 md:py-4 rounded-full bg-teal text-white font-semibold text-base md:text-[1.1rem] cursor-pointer border-none transition-all duration-300 hover:shadow-[0_0_30px_rgba(0,222,200,0.4)] hover:-translate-y-px">
               Get Started →
             </button>
           </Link>
@@ -390,7 +392,7 @@ export default function HomePage() {
       </section>
 
       {/* Footer */}
-      <footer className="flex justify-between items-center px-8 py-8 border-t border-[var(--border)] flex-wrap gap-4 max-md:flex-col max-md:text-center">
+      <footer className="flex justify-between items-center px-4 md:px-8 py-8 border-t border-[var(--border)] flex-wrap gap-4 max-md:flex-col max-md:text-center">
         <div className="font-display font-extrabold text-[var(--text-primary)] flex items-center gap-2 text-base">
           <svg width="22" height="22" viewBox="0 0 40 40">
             <path d="M20 4 L34 14 L34 30 Q34 36 20 38 Q6 36 6 30 L6 14 Z" fill="none" stroke="var(--accent-teal)" strokeWidth="2.5"/>

@@ -155,7 +155,7 @@ export default function AppPage() {
               Non-custodial. Your keys, your funds.
             </p>
             <button
-              className="w-full py-4 rounded-xl bg-teal text-white font-bold text-xl cursor-pointer border-none transition-all hover:shadow-[0_0_30px_rgba(0,222,200,0.4)] hover:-translate-y-px"
+              className="w-full py-3 md:py-4 rounded-xl bg-teal text-white font-bold text-lg md:text-xl cursor-pointer border-none transition-all hover:shadow-[0_0_30px_rgba(0,222,200,0.4)] hover:-translate-y-px"
               onClick={() => open()}
             >
               Connect Wallet
@@ -206,7 +206,7 @@ export default function AppPage() {
           <div className="hero-noise" />
         </div>
 
-        <main className="max-w-[1000px] mx-auto px-6 py-12">
+        <main className="max-w-[1000px] mx-auto px-4 md:px-6 py-8 md:py-12">
           {tab === "stats" ? (
             <StatsTab
               vaultBalance={vaultBalance}

@@ -25,7 +25,7 @@ export const StatsTab = ({
   const shortAddr = (addr: string) => addr.slice(0, 6) + "..." + addr.slice(-4);
 
   return (
-    <div className="max-w-[700px] mx-auto px-6 py-12">
+    <div className="max-w-[700px] mx-auto px-4 md:px-6 py-8 md:py-12">
       <h2 className="font-display text-[1.75rem] text-center mb-2 text-[var(--text-primary)]">
         Protocol Statistics
       </h2>
@@ -33,7 +33,7 @@ export const StatsTab = ({
         Live data from the YieldSafe vault on Base Sepolia
       </p>
       <div className="bg-[var(--bg-surface)] border border-[var(--border)] rounded-xl mb-4 overflow-hidden shadow-sm">
-        <div className="flex justify-between items-center px-6 py-4 border-b border-[var(--border)]">
+        <div className="flex justify-between items-center px-4 md:px-6 py-4 border-b border-[var(--border)]">
           <span className="font-semibold text-[var(--text-primary)]">Vault Overview</span>
           <a
             href={`https://sepolia.basescan.org/address/${process.env.NEXT_PUBLIC_YIELD_SAVE_CONTRACT_ADDRESS}`}
@@ -56,7 +56,7 @@ export const StatsTab = ({
         ].map((row, i, arr) => (
           <div
             key={i}
-            className={`flex justify-between items-center px-6 py-4 ${
+            className={`flex justify-between items-center px-4 md:px-6 py-4 ${
               i < arr.length - 1 ? "border-b border-[var(--border)]" : ""
             }`}
           >
@@ -67,7 +67,7 @@ export const StatsTab = ({
       </div>
 
       <div className="bg-[var(--bg-surface)] border border-[var(--border)] rounded-xl overflow-hidden shadow-sm">
-        <div className="px-6 py-4 border-b border-[var(--border)] font-semibold text-[var(--text-primary)]">
+        <div className="px-4 md:px-6 py-4 border-b border-[var(--border)] font-semibold text-[var(--text-primary)]">
           Your Position
         </div>
         {[
@@ -89,7 +89,7 @@ export const StatsTab = ({
         ].map((row, i, arr) => (
           <div
             key={i}
-            className={`flex justify-between items-center px-6 py-4 ${
+            className={`flex justify-between items-center px-4 md:px-6 py-4 ${
               i < arr.length - 1 ? "border-b border-[var(--border)]" : ""
             }`}
           >
