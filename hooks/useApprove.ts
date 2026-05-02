@@ -6,7 +6,7 @@ import { useDecodedError } from "./useDecodedError";
 import { useUsdcContract } from "./useErc20Contract";
 
 const YIELD_SAVE_CONTRACT_ADDRESS =
-  process.env.NEXT_PUBLIC_YIELD_SAVE_CONTRACT_ADDRESS;
+  process.env.NEXT_PUBLIC_YIELD_SAVE_CONTRACT_ADDRESS || "0x0000000000000000000000000000000000000000";
 
 if (!YIELD_SAVE_CONTRACT_ADDRESS) {
   throw new Error(

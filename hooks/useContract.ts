@@ -5,7 +5,7 @@ import YieldSaveVaultAbi from "../lib/abis/YieldSaveVault.json";
 import useRunners from "./useRunner";
 
 const YIELD_SAVE_CONTRACT_ADDRESS =
-  process.env.NEXT_PUBLIC_YIELD_SAVE_CONTRACT_ADDRESS;
+  process.env.NEXT_PUBLIC_YIELD_SAVE_CONTRACT_ADDRESS || "0x0000000000000000000000000000000000000000";
 
 if (!YIELD_SAVE_CONTRACT_ADDRESS) {
   throw new Error(

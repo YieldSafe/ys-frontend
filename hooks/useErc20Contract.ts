@@ -3,7 +3,7 @@ import { useMemo } from "react";
 import { ERC20_ABI } from "../lib/abis/erc20";
 import useRunners from "./useRunner";
 
-const USDC_CONTRACT_ADDRESS = process.env.NEXT_PUBLIC_USDC_CONTRACT_ADDRESS;
+const USDC_CONTRACT_ADDRESS = process.env.NEXT_PUBLIC_USDC_CONTRACT_ADDRESS || "0x0000000000000000000000000000000000000000";
 
 if (!USDC_CONTRACT_ADDRESS) {
   throw new Error(
