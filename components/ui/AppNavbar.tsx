@@ -28,7 +28,7 @@ export const AppNavbar = ({
 
   const navTab = (id: Tab, label: string, icon: React.ReactNode) => (
     <button
-      className={`app-nav-tab relative flex items-center gap-[0.4rem] px-[1.1rem] h-full text-xs font-semibold uppercase tracking-[0.06em] cursor-pointer border-none bg-transparent font-body whitespace-nowrap transition-colors duration-200 ${
+      className={`app-nav-tab relative flex items-center gap-[0.4rem] px-[0.5rem] sm:px-[0.8rem] md:px-[1.1rem] h-full text-xs font-semibold uppercase tracking-[0.06em] cursor-pointer border-none bg-transparent font-body whitespace-nowrap transition-colors duration-200 ${
         tab === id
           ? "active text-[var(--text-primary)]"
           : "text-[var(--text-micro)] hover:text-[var(--text-primary)]"
@@ -43,15 +43,15 @@ export const AppNavbar = ({
   );
 
   return (
-    <nav className="fixed top-0 left-0 right-0 z-[100] flex items-center px-8 h-[60px] bg-[var(--bg-nav-app)] backdrop-blur-[14px] border-b border-[var(--border)] max-md:px-4">
+    <nav className="fixed top-0 left-0 right-0 z-[100] flex items-center px-4 md:px-8 h-[60px] bg-[var(--bg-nav-app)] backdrop-blur-[14px] border-b border-[var(--border)] gap-1 md:gap-0">
       <Link
         href="/"
-        className="font-display font-extrabold text-xl text-[var(--text-primary)] flex items-center gap-2 no-underline mr-2 md:mr-8"
+        className="font-display font-extrabold text-xl text-[var(--text-primary)] flex items-center gap-2 no-underline mr-1 sm:mr-2 md:mr-8"
       >
         <Logo /> <span className="hidden sm:inline">YieldSafe</span>
       </Link>
 
-      <div className="flex items-center gap-0 h-full">
+      <div className="flex items-center gap-0 h-full flex-1 md:flex-none justify-center">
         {navTab(
           "deposit",
           "Deposit",
@@ -92,7 +92,7 @@ export const AppNavbar = ({
             <path d="M2 9h20M10 3v18" />
           </svg>,
         )}
-        <div className="w-px h-6 bg-[var(--border)] mx-2" />
+        <div className="w-px h-6 bg-[var(--border)] mx-1 md:mx-2" />
         {navTab(
           "stats",
           "Stats",
@@ -108,11 +108,11 @@ export const AppNavbar = ({
         )}
       </div>
 
-      <div className="ml-auto flex items-center gap-2 md:gap-3">
+      <div className="ml-auto flex items-center gap-1 sm:gap-2 md:gap-3">
         {isConnected && address ? (
           <>
-            <div className="flex items-center gap-2 bg-[var(--bg-elevated)] border border-[var(--border)] rounded-full px-2 md:px-3 py-[0.4rem] font-mono text-xs md:text-sm text-[var(--text-primary)]">
-              <span className="w-2 h-2 rounded-full bg-green-500" />
+            <div className="flex items-center gap-1.5 md:gap-2 bg-[var(--bg-elevated)] border border-[var(--border)] rounded-full px-2 md:px-3 py-[0.4rem] font-mono text-[10px] sm:text-xs md:text-sm text-[var(--text-primary)]">
+              <span className="w-1.5 h-1.5 md:w-2 md:h-2 rounded-full bg-green-500" />
               {shortAddr(address)}
             </div>
             <button
@@ -131,7 +131,7 @@ export const AppNavbar = ({
           </button>
         )}
         <button
-          className="bg-[var(--bg-elevated)] border border-[var(--border)] rounded-full w-9 h-9 cursor-pointer flex items-center justify-center text-[var(--text-muted)] transition-all hover:border-teal hover:text-teal p-0 [&_svg]:w-[18px] [&_svg]:h-[18px] [&_svg]:fill-current"
+          className="bg-[var(--bg-elevated)] border border-[var(--border)] rounded-full w-8 h-8 md:w-9 md:h-9 cursor-pointer flex items-center justify-center text-[var(--text-muted)] transition-all hover:border-teal hover:text-teal p-0 [&_svg]:w-[16px] md:[&_svg]:w-[18px] [&_svg]:h-[16px] md:[&_svg]:h-[18px] [&_svg]:fill-current flex-shrink-0"
           onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
           aria-label="Toggle theme"
         >

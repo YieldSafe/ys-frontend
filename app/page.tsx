@@ -111,39 +111,41 @@ export default function HomePage() {
     <>
       {/* Navbar */}
       <nav className="fixed top-0 left-0 right-0 z-[100] flex items-center justify-between px-4 md:px-8 py-4 bg-[var(--bg-nav)] backdrop-blur-[12px] border-b border-[var(--border)]">
-        <div className="font-display font-extrabold text-xl text-[var(--text-primary)] flex items-center gap-2">
-          <svg width="28" height="28" viewBox="0 0 40 40">
+        <div className="font-display font-extrabold text-xl md:text-xl text-[var(--text-primary)] flex items-center gap-1.5 md:gap-2">
+          <svg width="24" height="24" viewBox="0 0 40 40" className="md:w-[28px] md:h-[28px]">
             <path d="M20 4 L34 14 L34 30 Q34 36 20 38 Q6 36 6 30 L6 14 Z" fill="none" stroke="var(--accent-teal)" strokeWidth="2.5"/>
             <path d="M16 26 L20 18 L24 26 M14 22 L20 14 L26 22" fill="none" stroke="var(--accent-teal)" strokeWidth="2" strokeLinecap="round"/>
           </svg>
-          YieldSafe
+          <span className="hidden sm:inline">YieldSafe</span>
         </div>
-        <div className="flex items-center gap-3 md:gap-4">
+        <div className="flex items-center gap-1.5 sm:gap-3 md:gap-4">
           <div className="hidden md:flex items-center gap-4 mr-2">
             <a href="#how" className="text-[var(--text-muted)] text-sm hover:text-teal transition-colors">How it works</a>
             <a href="#stats" className="text-[var(--text-muted)] text-sm hover:text-teal transition-colors">Stats</a>
             <a href="#faq" className="text-[var(--text-muted)] text-sm hover:text-teal transition-colors">FAQ</a>
           </div>
           {isConnected ? (
-            <div className="flex items-center gap-2 bg-[var(--bg-elevated)] border border-[var(--border)] rounded-full px-3 py-1.5 font-mono text-xs text-[var(--text-primary)]">
-              <span className="w-2 h-2 rounded-full bg-green-500" />
+            <div className="flex items-center gap-1.5 md:gap-2 bg-[var(--bg-elevated)] border border-[var(--border)] rounded-full px-2 md:px-3 py-1.5 font-mono text-[10px] sm:text-xs text-[var(--text-primary)]">
+              <span className="w-1.5 h-1.5 md:w-2 md:h-2 rounded-full bg-green-500" />
               {shortAddr(address!)}
             </div>
           ) : (
             <button
               onClick={() => open()}
-              className="inline-flex items-center gap-2 px-5 py-2 rounded-full bg-teal text-white font-semibold text-sm cursor-pointer border-none transition-all duration-300 hover:shadow-[0_0_30px_rgba(0,222,200,0.4)] hover:-translate-y-px"
+              className="inline-flex items-center gap-2 px-3 md:px-5 py-1.5 md:py-2 rounded-full bg-teal text-white font-semibold text-xs md:text-sm cursor-pointer border-none transition-all duration-300 hover:shadow-[0_0_30px_rgba(0,222,200,0.4)] hover:-translate-y-px"
             >
-              Connect Wallet
+              <span className="hidden sm:inline">Connect Wallet</span>
+              <span className="sm:hidden">Connect</span>
             </button>
           )}
           <Link href="/app">
-            <button className="inline-flex items-center gap-2 px-5 py-2 rounded-full bg-transparent text-teal border border-teal font-semibold text-sm cursor-pointer transition-all duration-300 hover:bg-[var(--glow-teal)]">
-              Launch App
+            <button className="inline-flex items-center gap-2 px-3 md:px-5 py-1.5 md:py-2 rounded-full bg-transparent text-teal border border-teal font-semibold text-xs md:text-sm cursor-pointer transition-all duration-300 hover:bg-[var(--glow-teal)]">
+              <span className="hidden sm:inline">Launch App</span>
+              <span className="sm:hidden">Launch</span>
             </button>
           </Link>
           <button
-            className="bg-[var(--bg-elevated)] border border-[var(--border)] rounded-full w-9 h-9 cursor-pointer flex items-center justify-center text-[var(--text-muted)] transition-all duration-200 hover:border-teal hover:text-teal p-0 leading-none [&_svg]:w-[18px] [&_svg]:h-[18px] [&_svg]:fill-current [&_svg]:transition-transform [&_svg]:duration-300 hover:[&_svg]:rotate-[30deg]"
+            className="bg-[var(--bg-elevated)] border border-[var(--border)] rounded-full w-8 h-8 md:w-9 md:h-9 cursor-pointer flex items-center justify-center text-[var(--text-muted)] transition-all duration-200 hover:border-teal hover:text-teal p-0 leading-none [&_svg]:w-[16px] md:[&_svg]:w-[18px] [&_svg]:h-[16px] md:[&_svg]:h-[18px] [&_svg]:fill-current [&_svg]:transition-transform [&_svg]:duration-300 hover:[&_svg]:rotate-[30deg] flex-shrink-0"
             onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
             aria-label="Toggle theme"
           >
