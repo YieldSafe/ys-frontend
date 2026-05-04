@@ -1,6 +1,6 @@
 import { useCallback } from "react";
 import { useReadVault } from "./specific/useRead";
-
+// VaultBalance Hooks
 export const useVaultBalance = () => {
   const { getVaultBalance, isLoading } = useReadVault();
 
