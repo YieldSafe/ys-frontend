@@ -1,6 +1,7 @@
 import { useCallback } from "react";
 import { useWriteVault } from "./specific/useWrite";
 
+// Withdrawal hooks
 export const useWithdraw = () => {
   const { isWithdrawing, withdraw } = useWriteVault();
 
