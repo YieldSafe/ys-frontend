@@ -6,37 +6,17 @@ YieldSafe is a non-custodial DeFi savings application that lets users deposit US
 
 ## Documentation Index
 
-| Document | Description |
-|----------|-------------|
-| [Setup Guide](./setup.md) | Installation, environment variables, and local dev |
-| [Architecture Overview](./architecture.md) | System design, diagrams, component hierarchy |
-| [Folder Structure](./folder-structure.md) | Every directory and file explained |
-| [Smart Contract Integration](./smart-contracts.md) | ABI reference, addresses, function signatures |
-| [Hooks Reference](./hooks.md) | All 16 custom hooks: purpose, params, return values |
-| [Component Reference](./components.md) | All components: props, responsibilities, dependencies |
-| [Wallet Connect Flow](./flows/wallet-connect.md) | AppKit setup, connection lifecycle |
-| [Deposit Flow](./flows/deposit.md) | Approve + Deposit end-to-end |
-| [Withdraw Flow](./flows/withdraw.md) | Share redemption end-to-end |
-| [Token Approval Flow](./flows/token-approval.md) | ERC20 allowance pattern |
-| [Deployment Guide](./deployment.md) | Vercel, environment setup, production checklist |
-| [Troubleshooting](./troubleshooting.md) | Common errors and fixes |
-
----
-
-## Quick Reference
-
-**Network:** Base Sepolia (Chain ID `84532`)
-
-**Core Contracts:**
-- `YieldSaveVault` — main vault (address via `NEXT_PUBLIC_YIELD_SAVE_CONTRACT_ADDRESS`)
-- `USDC` — ERC-20 token (address via `NEXT_PUBLIC_USDC_CONTRACT_ADDRESS`)
-
-**Primary User Flows:**
-1. Connect Wallet → Deposit USDC → Earn Yield → Withdraw USDC + Yield
-2. Fee: 5% on yield only (not principal), deducted at withdrawal
-
-**Key Stack:**
-- Next.js 16 + React 19 (App Router)
-- Reown AppKit (formerly WalletConnect) for wallet connection
-- ethers.js v6 for contract interaction
-- Tailwind CSS v4 with dark/light theming
+| Document                                                   | Description                                                                                   |
+| ---------------------------------------------------------- | --------------------------------------------------------------------------------------------- |
+| [Setup Guide](./setup.md)                                  | Clone the repo, install dependencies, configure env vars, and run the app locally             |
+| [Architecture Overview](./architecture.md)                 | System design, component hierarchy, data flow diagrams, and deployment topology               |
+| [Folder Structure](./folder-structure.md)                  | Every directory and file explained — what it does, what it exports, and why it exists         |
+| [Smart Contract Integration](./smart-contracts.md)         | ABI reference, function signatures, events, custom errors, and read vs write paths            |
+| [Hooks Reference](./hooks.md)                              | All 16 custom hooks — purpose, parameters, return values, and full dependency tree            |
+| [Component Reference](./components.md)                     | Every component — props, responsibilities, hooks used, and top-level data flow                |
+| [Wallet Connect Flow](./flows/wallet-connect.md)           | AppKit initialisation, connection lifecycle, hooks used, and disconnection handling           |
+| [Deposit Flow](./flows/deposit.md)                         | Approve and deposit end-to-end — flow diagram, on-chain execution, and error handling         |
+| [Withdraw Flow](./flows/withdraw.md)                       | Redeem shares for USDC — flow diagram, fee calculation, preview, and error handling           |
+| [Token Approval Flow](./flows/token-approval.md)           | Why ERC-20 approval is required, the exact code path, and allowance check logic               |
+| [Deployment Guide](./deployment.md)                        | Deploy to Vercel, set env vars, production checklist, contract upgrades, and rollback         |
+| [Troubleshooting](./troubleshooting.md)                    | 20+ common errors with root causes, fixes, and guidance on where to get further help         |
