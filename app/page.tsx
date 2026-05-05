@@ -167,7 +167,7 @@ export default function HomePage() {
           <div className="w-full lg:flex-[0_0_58%]">
             <p className="text-xs uppercase tracking-[0.15em] text-[var(--text-muted)] font-medium mb-4">Non-custodial • Powered by Aave V3</p>
             <h1 className="font-display font-extrabold leading-[1.05] mb-5 text-[clamp(2.5rem,8vw,5.5rem)]">
-              Your savings,<br className="hidden lg:block" />always earning.
+              Your savings,<br />always earning.
             </h1>
             <p className="text-lg md:text-xl text-[var(--text-muted)] mb-8 max-w-[500px] mx-auto lg:mx-0">
               Deposit USDC. Earn DeFi yield automatically. Withdraw any time.
@@ -198,10 +198,6 @@ export default function HomePage() {
                   )}
                 </div>
                 <div className="text-xs text-[var(--text-muted)] mt-1">Total Deposited</div>
-              </div>
-              <div className="bg-[var(--bg-surface)] border border-[var(--border)] rounded-xl p-4 px-6 min-w-[150px] shadow-[-4px_0_16px_var(--glow-teal)]">
-                <div className="font-display text-[1.75rem] font-extrabold"><CountUp end={4200} suffix="+" /></div>
-                <div className="text-xs text-[var(--text-muted)] mt-1">Active Users</div>
               </div>
             </div>
           </div>
@@ -264,7 +260,6 @@ export default function HomePage() {
             {[
               { label: "Annual Percentage Rate*", val: "4.8%", cls: "text-teal" },
               { label: "Total USDC Deposited",    val: liveVaultBalance !== null ? `$${parseFloat(formatUnits(liveVaultBalance, 6)).toLocaleString()}` : "$2,400,000", cls: "text-gold" },
-              { label: "Active Depositors",       val: "4,207", cls: "" },
               { label: "Protocol Fee",            val: "5% on yield only", cls: "" },
             ].map((row, i, arr) => (
               <div key={i} className={`flex justify-between items-center px-6 py-4 ${i < arr.length - 1 ? "border-b border-[var(--border)]" : ""}`}>

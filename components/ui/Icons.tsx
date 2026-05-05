@@ -21,9 +21,8 @@ export const MoonIcon = () => (
 );
 
 export const Logo = () => (
-  <svg width="24" height="24" viewBox="0 0 40 40" fill="none">
-    <rect width="40" height="40" rx="10" fill="#00DEC8" />
-    <path d="M20 10L30 25H10L20 10Z" fill="white" />
-    <path d="M20 18L26 27H14L20 18Z" fill="#0C1018" />
-  </svg>
+  <svg width="24" height="24" viewBox="0 0 40 40" className="md:w-[28px] md:h-[28px]">
+            <path d="M20 4 L34 14 L34 30 Q34 36 20 38 Q6 36 6 30 L6 14 Z" fill="none" stroke="var(--accent-teal)" strokeWidth="2.5"/>
+            <path d="M16 26 L20 18 L24 26 M14 22 L20 14 L26 22" fill="none" stroke="var(--accent-teal)" strokeWidth="2" strokeLinecap="round"/>
+          </svg>
 );

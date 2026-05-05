@@ -20,7 +20,7 @@ export const StatsGrid = ({
       : "0.00";
 
   return (
-    <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+    <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
       {[
         {
           val: isLoadingVaultBalance ? "…" : `$${fmt(vaultBalance)}`,
@@ -28,7 +28,6 @@ export const StatsGrid = ({
           cls: "",
         },
         { val: "4.8%", label: "Current APR", cls: "text-teal" },
-        { val: "4,207", label: "Active Users", cls: "" },
         { val: "No Lockup", label: "Withdrawals", cls: "text-gold" },
       ].map((stat, i) => (
         <div
@@ -48,3 +47,6 @@ export const StatsGrid = ({
     </div>
   );
 };
+
+
+// the question is if we are adding to the pool we are meant to be addiing to tookens  into the pull
