@@ -1,7 +1,7 @@
 "use client";
 import React from "react";
 import Link from "next/link";
-import { Logo, SunIcon, MoonIcon } from "./Icons";
+import { Logo, SunIcon, MoonIcon, DepositIcon, WithdrawIcon, EarnIcon, StatsIcon } from "./Icons";
 
 export type Tab = "deposit" | "withdraw" | "rewards" | "stats";
 
@@ -28,115 +28,69 @@ export const AppNavbar = ({
 
   const navTab = (id: Tab, label: string, icon: React.ReactNode) => (
     <button
-      className={`app-nav-tab relative flex items-center gap-[0.4rem] px-[0.5rem] sm:px-[0.8rem] md:px-[1.1rem] h-full text-xs font-semibold uppercase tracking-[0.06em] cursor-pointer border-none bg-transparent font-body whitespace-nowrap transition-colors duration-200 ${
+      className={`relative flex items-center gap-2 px-6 h-full text-xs font-bold uppercase tracking-widest transition-all duration-300 ${
         tab === id
-          ? "active text-[var(--text-primary)]"
-          : "text-[var(--text-micro)] hover:text-[var(--text-primary)]"
+          ? "text-teal bg-white/[0.03]"
+          : "text-muted hover:text-primary hover:bg-white/[0.01]"
       }`}
       onClick={() => setTab(id)}
     >
-      <span className="[&_svg]:w-4 [&_svg]:h-4 [&_svg]:fill-current flex-shrink-0">
-        {icon}
-      </span>
-      <span className="max-md:hidden">{label}</span>
+      {icon}
+      <span className="hidden lg:inline">{label}</span>
+      {tab === id && (
+        <div className="absolute bottom-0 left-0 right-0 h-1 bg-teal shadow-[0_0_15px_rgba(0,245,255,0.8)]" />
+      )}
     </button>
   );
 
   return (
-    <nav className="fixed top-0 left-0 right-0 z-[100] flex items-center px-4 md:px-8 h-[60px] bg-[var(--bg-nav-app)] backdrop-blur-[14px] border-b border-[var(--border)] gap-1 md:gap-0">
-      <Link
-        href="/"
-        className="font-display font-extrabold text-xl text-[var(--text-primary)] flex items-center gap-2 no-underline mr-1 sm:mr-2 md:mr-8"
-      >
-        <Logo /> <span className="hidden sm:inline">YieldSafe</span>
-      </Link>
+    <nav className="fixed top-0 left-0 right-0 z-[100] nav-glass h-20 px-6">
+      <div className="max-w-7xl mx-auto h-full flex items-center justify-between">
+        <Link href="/" className="flex items-center gap-4 group">
+          <Logo />
+          <span className="font-display font-black text-2xl tracking-tight hidden sm:block">
+            YIELD<span className="text-teal">SAFE</span>
+          </span>
+        </Link>
 
-      <div className="flex items-center gap-0 h-full flex-1 md:flex-none justify-center">
-        {navTab(
-          "deposit",
-          "Deposit",
-          <svg
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            strokeWidth="2"
-            strokeLinecap="round"
-          >
-            <path d="M12 19V5M5 12l7-7 7 7" />
-          </svg>,
-        )}
-        {navTab(
-          "withdraw",
-          "Withdraw",
-          <svg
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            strokeWidth="2"
-            strokeLinecap="round"
-          >
-            <path d="M12 5v14M19 12l-7 7-7-7" />
-          </svg>,
-        )}
-        {navTab(
-          "rewards",
-          "Rewards",
-          <svg
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            strokeWidth="2"
-            strokeLinecap="round"
-          >
-            <rect x="2" y="3" width="20" height="18" rx="2" />
-            <path d="M2 9h20M10 3v18" />
-          </svg>,
-        )}
-        <div className="w-px h-6 bg-[var(--border)] mx-1 md:mx-2" />
-        {navTab(
-          "stats",
-          "Stats",
-          <svg
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            strokeWidth="2"
-            strokeLinecap="round"
-          >
-            <polyline points="22 12 18 12 15 21 9 3 6 12 2 12" />
-          </svg>,
-        )}
-      </div>
+        <div className="hidden md:flex items-center h-full mx-8">
+          {navTab("deposit", "Deposit", <DepositIcon />)}
+          {navTab("withdraw", "Withdraw", <WithdrawIcon />)}
+          {navTab("rewards", "Rewards", <EarnIcon />)}
+          <div className="w-px h-8 bg-border mx-2" />
+          {navTab("stats", "Analytics", <StatsIcon />)}
+        </div>
 
-      <div className="ml-auto flex items-center gap-1 sm:gap-2 md:gap-3">
-        {isConnected && address ? (
-          <>
-            <div className="flex items-center gap-1.5 md:gap-2 bg-[var(--bg-elevated)] border border-[var(--border)] rounded-full px-2 md:px-3 py-[0.4rem] font-mono text-[10px] sm:text-xs md:text-sm text-[var(--text-primary)]">
-              <span className="w-1.5 h-1.5 md:w-2 md:h-2 rounded-full bg-green-500" />
-              {shortAddr(address)}
-            </div>
-            <button
-              className="hidden sm:inline-flex items-center gap-2 px-[0.9rem] py-[0.35rem] rounded-full bg-transparent text-teal border-[1.5px] border-teal text-xs font-semibold cursor-pointer transition-all hover:bg-[var(--glow-teal)]"
-              onClick={() => open()}
-            >
-              Disconnect
-            </button>
-          </>
-        ) : (
+        <div className="flex items-center gap-4">
           <button
-            className="inline-flex items-center gap-2 px-3 md:px-5 py-1.5 md:py-2 rounded-full bg-teal text-white font-semibold text-xs md:text-sm cursor-pointer border-none transition-all hover:shadow-[0_0_30px_rgba(0,222,200,0.4)]"
-            onClick={() => open()}
+            className="p-3 rounded-2xl bg-white/[0.02] border border-border hover:border-teal transition-all text-secondary"
+            onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
           >
-            Connect
+            {theme === "dark" ? <SunIcon /> : <MoonIcon />}
           </button>
-        )}
-        <button
-          className="bg-[var(--bg-elevated)] border border-[var(--border)] rounded-full w-8 h-8 md:w-9 md:h-9 cursor-pointer flex items-center justify-center text-[var(--text-muted)] transition-all hover:border-teal hover:text-teal p-0 [&_svg]:w-[16px] md:[&_svg]:w-[18px] [&_svg]:h-[16px] md:[&_svg]:h-[18px] [&_svg]:fill-current flex-shrink-0"
-          onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
-          aria-label="Toggle theme"
-        >
-          {theme === "dark" ? <SunIcon /> : <MoonIcon />}
-        </button>
+
+          {isConnected && address ? (
+            <div className="flex items-center gap-4">
+              <div className="hidden sm:flex items-center gap-3 bg-white/[0.03] border border-border rounded-2xl px-5 py-2.5 font-mono text-sm">
+                <div className="w-2 h-2 rounded-full bg-teal animate-pulse shadow-[0_0_10px_#00F5FF]" />
+                <span className="text-primary">{shortAddr(address)}</span>
+              </div>
+              <button
+                onClick={() => open()}
+                className="hidden lg:flex btn-outline !py-2.5 !px-6 !text-xs border-danger/30 text-danger hover:bg-danger/10 hover:border-danger hover:text-danger"
+              >
+                Disconnect
+              </button>
+            </div>
+          ) : (
+            <button
+              onClick={() => open()}
+              className="btn-gradient !py-2.5 !px-8 !text-xs"
+            >
+              Connect Wallet
+            </button>
+          )}
+        </div>
       </div>
     </nav>
   );

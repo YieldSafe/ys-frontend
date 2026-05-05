@@ -1,6 +1,7 @@
 "use client";
 import React from "react";
 import { Tab } from "../ui/AppNavbar";
+import { DepositIcon, WithdrawIcon, EarnIcon } from "../ui/Icons";
 
 interface ActionTabsProps {
   activeTab: Tab;
@@ -8,25 +9,26 @@ interface ActionTabsProps {
 }
 
 export const ActionTabs = ({ activeTab, setActiveTab }: ActionTabsProps) => {
-  const tabs: { id: Tab; label: string }[] = [
-    { id: "deposit", label: "Deposit" },
-    { id: "withdraw", label: "Withdraw" },
-    { id: "rewards", label: "Rewards" },
+  const tabs: { id: Tab; label: string; icon: React.ReactNode }[] = [
+    { id: "deposit", label: "Deposit", icon: <DepositIcon /> },
+    { id: "withdraw", label: "Withdraw", icon: <WithdrawIcon /> },
+    { id: "rewards", label: "Rewards", icon: <EarnIcon /> },
   ];
 
   return (
-    <div className="flex gap-1 p-1 bg-[var(--bg-elevated)] border border-[var(--border)] rounded-2xl mb-8 w-fit mx-auto">
+    <div className="flex p-1.5 bg-white/[0.02] border border-white/[0.05] rounded-[20px] mb-10 w-full sm:w-fit mx-auto">
       {tabs.map((t) => (
         <button
           key={t.id}
-          className={`px-4 sm:px-6 md:px-8 py-2 md:py-2.5 rounded-xl text-xs md:text-sm font-bold transition-all ${
+          className={`flex-1 sm:flex-none flex items-center justify-center gap-2 px-4 sm:px-10 py-3 rounded-[14px] text-xs font-black uppercase tracking-widest transition-all duration-300 ${
             activeTab === t.id
-              ? "bg-[var(--bg-surface)] text-teal shadow-sm"
-              : "text-[var(--text-micro)] hover:text-[var(--text-muted)]"
+              ? "bg-teal text-black shadow-[0_0_20px_rgba(0,245,255,0.4)]"
+              : "text-muted hover:text-primary hover:bg-white/[0.02]"
           }`}
           onClick={() => setActiveTab(t.id)}
         >
-          {t.label}
+          {t.icon}
+          <span className="hidden xs:inline">{t.label}</span>
         </button>
       ))}
     </div>

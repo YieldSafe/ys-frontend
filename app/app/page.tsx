@@ -2,6 +2,7 @@
 import { useState, useEffect, useCallback } from "react";
 import { useAppKitAccount, useAppKit } from "@reown/appkit/react";
 import { formatUnits, parseUnits } from "ethers";
+import { DashboardIcon, StatsIcon, EarnIcon } from "../../components/ui/Icons";
 
 // Hooks
 import { useUsdcBalance } from "../../hooks/useUsdcBalance";
@@ -25,7 +26,10 @@ const USDC_DECIMALS = 6;
 
 export default function AppPage() {
   const [tab, setTab] = useState<Tab>("deposit");
-  const [theme, setTheme] = useState("dark");
+  const [theme, setTheme] = useState(() => {
+    if (typeof window !== "undefined") return localStorage.getItem("theme") ?? "dark";
+    return "dark";
+  });
 
   const [usdcBalance, setUsdcBalance] = useState<bigint | null>(null);
   const [userShares, setUserShares] = useState<bigint | null>(null);
@@ -34,11 +38,9 @@ export default function AppPage() {
   const [vaultBalance, setVaultBalance] = useState<bigint | null>(null);
   const [exchangeRate, setExchangeRate] = useState<number>(0.9921);
 
-  // AppKit Hooks
   const { address, isConnected } = useAppKitAccount();
   const { open } = useAppKit();
 
-  // Data Fetching Hooks
   const { refetchUsdcBalance, isLoadingUsdcBalance } = useUsdcBalance();
   const { refetchUserShares, isLoadingUserShares } = useUserShares();
   const { refetchUserBalance, isLoadingUserBalance } = useUserBalance();
@@ -74,18 +76,8 @@ export default function AppPage() {
   ]);
 
   useEffect(() => {
-    // eslint-disable-next-line react-hooks/set-state-in-effect
     refreshData();
   }, [refreshData]);
-
-  useEffect(() => {
-    const saved = localStorage.getItem("theme");
-    // eslint-disable-next-line react-hooks/set-state-in-effect
-    if (saved) setTheme(saved);
-    else if (window.matchMedia("(prefers-color-scheme: dark)").matches) {
-      setTheme("dark");
-    }
-  }, []);
 
   useEffect(() => {
     document.documentElement.setAttribute("data-theme", theme);
@@ -102,7 +94,7 @@ export default function AppPage() {
 
   if (!isConnected) {
     return (
-      <>
+      <div className="min-h-screen selection:bg-teal selection:text-black">
         <AppNavbar
           tab={tab}
           setTab={setTab}
@@ -112,67 +104,38 @@ export default function AppPage() {
           theme={theme}
           setTheme={setTheme}
         />
-        <div className="min-h-screen pt-[60px] flex items-center justify-center p-6 relative overflow-hidden">
-          {/* Ambient background */}
-          <div
-            className="fixed inset-0 z-[-1]"
-            style={{ background: "var(--hero-bg)" }}
-          >
-            <div
-              className="absolute rounded-full filter blur-[80px] opacity-30 w-[500px] h-[500px] top-[10%] left-[15%] animate-blobFloat"
-              style={{
-                background:
-                  "radial-gradient(circle, rgba(0,222,200,0.25), transparent 70%)",
-              }}
-            />
-            <div
-              className="absolute rounded-full filter blur-[80px] opacity-30 w-[400px] h-[400px] bottom-[15%] right-[10%] animate-blobFloatReverse"
-              style={{
-                background:
-                  "radial-gradient(circle, rgba(12,16,24,0.8), transparent 70%)",
-              }}
-            />
-            <div className="hero-noise" />
-          </div>
-
-          <div className="bg-[var(--bg-surface)] border border-[var(--border)] rounded-2xl p-8 md:p-12 text-center max-w-[500px] w-full shadow-2xl relative z-10">
-            <div className="w-16 h-16 md:w-20 md:h-20 bg-[var(--glow-teal)] rounded-3xl flex items-center justify-center text-teal mx-auto mb-6 md:mb-8">
-              <svg
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="2"
-                strokeLinecap="round"
-                className="w-8 h-8 md:w-10 md:h-10"
-              >
-                <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
-              </svg>
+        <div className="fixed inset-0 mesh-bg z-0" />
+        
+        <div className="relative z-10 pt-32 flex items-center justify-center p-6 min-h-screen">
+          <div className="glass-panel p-12 md:p-16 text-center max-w-xl w-full shadow-2xl">
+            <div className="w-20 h-20 bg-teal/10 rounded-[32px] flex items-center justify-center text-teal mx-auto mb-10 border border-teal/20">
+              <DashboardIcon />
             </div>
-            <h1 className="font-display text-3xl md:text-4xl font-extrabold mb-4 leading-tight">
-              Connect your wallet to begin
-            </h1>
-            <p className="text-[var(--text-muted)] text-base md:text-lg mb-8 md:mb-10">
-              Non-custodial. Your keys, your funds.
+            <h1 className="text-4xl font-black mb-4 tracking-tight uppercase">Ready to Earn?</h1>
+            <p className="text-secondary text-lg mb-10 font-medium">
+              Securely connect your wallet to access your non-custodial yield dashboard.
             </p>
             <button
-              className="w-full py-3 md:py-4 rounded-xl bg-teal text-white font-bold text-lg md:text-xl cursor-pointer border-none transition-all hover:shadow-[0_0_30px_rgba(0,222,200,0.4)] hover:-translate-y-px"
+              className="btn-gradient w-full !text-lg !py-5"
               onClick={() => open()}
             >
-              Connect Wallet
+              Connect Securely
             </button>
-            <div className="mt-8 flex justify-center gap-6 text-[var(--text-micro)] uppercase tracking-widest font-semibold opacity-50">
-              <span>MetaMask</span>
-              <span>Coinbase</span>
-              <span>WalletConnect</span>
+            <div className="mt-10 flex justify-center gap-8 text-[10px] font-black uppercase tracking-[0.3em] text-micro">
+              <span>Mainnet Security</span>
+              <span>•</span>
+              <span>Zero Fees</span>
+              <span>•</span>
+              <span>Instant Exit</span>
             </div>
           </div>
         </div>
-      </>
+      </div>
     );
   }
 
   return (
-    <>
+    <div className="min-h-screen selection:bg-teal selection:text-black">
       <AppNavbar
         tab={tab}
         setTab={setTab}
@@ -182,90 +145,97 @@ export default function AppPage() {
         theme={theme}
         setTheme={setTheme}
       />
+      
+      <div className="fixed inset-0 mesh-bg z-0" />
 
-      <div className="min-h-screen pt-[60px] relative">
-        {/* Ambient background */}
-        <div
-          className="fixed inset-0 z-[-1]"
-          style={{ background: "var(--hero-bg)" }}
-        >
-          <div
-            className="absolute rounded-full filter blur-[80px] opacity-30 w-[500px] h-[500px] top-[10%] left-[15%] animate-blobFloat"
-            style={{
-              background:
-                "radial-gradient(circle, rgba(0,222,200,0.25), transparent 70%)",
-            }}
+      <main className="relative z-10 max-w-7xl mx-auto px-6 pt-32 pb-24">
+        {tab === "stats" ? (
+          <StatsTab
+            vaultBalance={vaultBalance}
+            userBalance={userBalance}
+            userShares={userShares}
+            isLoadingVaultBalance={isLoadingVaultBalance}
+            isLoadingUserBalance={isLoadingUserBalance}
+            isLoadingUserShares={isLoadingUserShares}
+            address={address}
+            fmt={fmt}
           />
-          <div
-            className="absolute rounded-full filter blur-[80px] opacity-30 w-[400px] h-[400px] bottom-[15%] right-[10%] animate-blobFloatReverse"
-            style={{
-              background:
-                "radial-gradient(circle, rgba(12,16,24,0.8), transparent 70%)",
-            }}
-          />
-          <div className="hero-noise" />
-        </div>
-
-        <main className="max-w-[1000px] mx-auto px-4 md:px-6 py-8 md:py-12">
-          {tab === "stats" ? (
-            <StatsTab
-              vaultBalance={vaultBalance}
+        ) : (
+          <div className="space-y-12">
+            <BalanceCards
+              usdcBalance={usdcBalance}
               userBalance={userBalance}
               userShares={userShares}
-              isLoadingVaultBalance={isLoadingVaultBalance}
+              isLoadingUsdcBalance={isLoadingUsdcBalance}
               isLoadingUserBalance={isLoadingUserBalance}
               isLoadingUserShares={isLoadingUserShares}
-              address={address}
-              fmt={fmt}
             />
-          ) : (
-            <>
-              <BalanceCards
-                usdcBalance={usdcBalance}
-                userBalance={userBalance}
-                userShares={userShares}
-                isLoadingUsdcBalance={isLoadingUsdcBalance}
-                isLoadingUserBalance={isLoadingUserBalance}
-                isLoadingUserShares={isLoadingUserShares}
-              />
 
-              <ActionTabs activeTab={tab} setActiveTab={setTab} />
-
-              <div className="max-w-[500px] mx-auto mb-16">
-                {tab === "deposit" && (
-                  <DepositForm
-                    usdcBalance={usdcBalance}
-                    exchangeRate={exchangeRate}
-                    onSuccess={refreshData}
-                    isConnected={isConnected}
-                  />
-                )}
-                {tab === "withdraw" && (
-                  <WithdrawForm
-                    userShares={userShares}
-                    onSuccess={refreshData}
-                    isConnected={isConnected}
-                  />
-                )}
-                {tab === "rewards" && (
-                  <RewardsTab
-                    userShares={userShares}
-                    userBalance={userBalance}
-                    userDeposits={userDeposits}
-                    isLoadingUserShares={isLoadingUserShares}
-                    fmt={fmt}
-                  />
-                )}
+            <div className="grid lg:grid-cols-12 gap-12 items-start">
+              <div className="lg:col-span-7">
+                <div className="glass-panel p-10 border-white/[0.05]">
+                  <ActionTabs activeTab={tab} setActiveTab={setTab} />
+                  
+                  <div className="mt-10">
+                    {tab === "deposit" && (
+                      <DepositForm
+                        usdcBalance={usdcBalance}
+                        exchangeRate={exchangeRate}
+                        onSuccess={refreshData}
+                        isConnected={isConnected}
+                      />
+                    )}
+                    {tab === "withdraw" && (
+                      <WithdrawForm
+                        userShares={userShares}
+                        onSuccess={refreshData}
+                        isConnected={isConnected}
+                      />
+                    )}
+                    {tab === "rewards" && (
+                      <RewardsTab
+                        userShares={userShares}
+                        userBalance={userBalance}
+                        userDeposits={userDeposits}
+                        isLoadingUserShares={isLoadingUserShares}
+                        fmt={fmt}
+                      />
+                    )}
+                  </div>
+                </div>
               </div>
 
-              <StatsGrid
-                vaultBalance={vaultBalance}
-                isLoadingVaultBalance={isLoadingVaultBalance}
-              />
-            </>
-          )}
-        </main>
-      </div>
-    </>
+              <div className="lg:col-span-5 space-y-12">
+                <div className="glass-panel p-10 border-teal/10">
+                  <h3 className="text-xl font-black mb-6 uppercase tracking-widest flex items-center gap-3">
+                    <StatsIcon /> Network Pulse
+                  </h3>
+                  <StatsGrid
+                    vaultBalance={vaultBalance}
+                    isLoadingVaultBalance={isLoadingVaultBalance}
+                  />
+                </div>
+                
+                <div className="glass-panel p-10 border-gold/10">
+                  <h3 className="text-xl font-black mb-6 uppercase tracking-widest flex items-center gap-3">
+                    <EarnIcon /> Smart Yield Info
+                  </h3>
+                  <div className="space-y-4 text-sm font-medium text-secondary">
+                    <div className="flex justify-between items-center p-4 bg-white/[0.02] rounded-xl border border-white/[0.05]">
+                      <span>Protocol Fee</span>
+                      <span className="text-primary font-bold">5% (Yield Only)</span>
+                    </div>
+                    <div className="flex justify-between items-center p-4 bg-white/[0.02] rounded-xl border border-white/[0.05]">
+                      <span>Exit Liquidity</span>
+                      <span className="text-teal font-bold">Instant ✓</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        )}
+      </main>
+    </div>
   );
 }

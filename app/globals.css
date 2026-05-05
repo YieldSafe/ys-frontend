@@ -1,200 +1,202 @@
-@import url('https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=DM+Sans:wght@400;500;600&family=Space+Mono:wght@400;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Dosis:wght@200;300;400;500;600;700;800&family=Quicksand:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;700&display=swap');
 
 @import "tailwindcss";
 @config "../tailwind.config.ts";
 
-/* ============================================================
-   CSS Custom Properties — design tokens referenced by Tailwind
-   ============================================================ */
 :root {
-  --bg-base: #07090F;
-  --bg-surface: #0C1018;
-  --bg-elevated: #121926;
-  --border: #1C2740;
-  --accent-teal: #00DEC8;
-  --accent-gold: #EFA500;
-  --accent-danger: #E85555;
-  --text-primary: #E8EEFF;
-  --text-muted: #5E6E8A;
-  --text-micro: #3A4A62;
-  --glow-teal: rgba(0, 222, 200, 0.15);
-  --glow-gold: rgba(239, 165, 0, 0.12);
-  --hero-bg: radial-gradient(ellipse at center, #0a0e1a 0%, #07090F 70%);
-  --bg-nav: rgba(7, 9, 15, 0.85);
-  --bg-nav-app: rgba(7, 9, 15, 0.92);
+  --bg-deep: #030408;
+  --bg-base: #05060B;
+  --bg-surface: rgba(10, 14, 23, 0.7);
+  --bg-elevated: rgba(18, 24, 38, 0.8);
+  --border: rgba(255, 255, 255, 0.06);
+  --border-bright: rgba(255, 255, 255, 0.12);
+  
+  --accent-teal: #00F5FF;
+  --accent-teal-glow: rgba(0, 245, 255, 0.4);
+  --accent-gold: #FFD700;
+  --accent-gold-glow: rgba(255, 215, 0, 0.3);
+  --accent-purple: #9D00FF;
+  
+  --text-primary: #FFFFFF;
+  --text-secondary: #A0AEC0;
+  --text-muted: #718096;
+  --text-micro: #4A5568;
+  
+  --glass-blur: blur(16px);
+  --glass-border: 1px solid rgba(255, 255, 255, 0.08);
+  --shadow-premium: 0 20px 40px rgba(0, 0, 0, 0.4);
 }
 
 [data-theme="light"] {
-  --bg-base: #F2F5FC;
-  --bg-surface: #FFFFFF;
-  --bg-elevated: #E8ECF8;
-  --border: #D0D9EE;
-  --accent-teal: #00897B;
-  --accent-gold: #B8860B;
-  --accent-danger: #C0392B;
-  --text-primary: #080C18;
-  --text-muted: #4A5568;
-  --text-micro: #8896AE;
-  --glow-teal: rgba(0, 137, 123, 0.12);
-  --glow-gold: rgba(184, 134, 11, 0.1);
-  --hero-bg: radial-gradient(ellipse at center, #F5FAFF 0%, #E0E8FF 70%);
-  --bg-nav: rgba(242, 245, 252, 0.9);
-  --bg-nav-app: rgba(255, 255, 255, 0.95);
+  --bg-deep: #F8FAFC;
+  --bg-base: #FFFFFF;
+  --bg-surface: rgba(255, 255, 255, 0.85);
+  --bg-elevated: rgba(241, 245, 249, 0.95);
+  --border: rgba(0, 0, 0, 0.06);
+  --border-bright: rgba(0, 0, 0, 0.12);
+  
+  --accent-teal: #0D9488;
+  --accent-teal-glow: rgba(13, 148, 136, 0.2);
+  --accent-gold: #D97706;
+  --accent-gold-glow: rgba(217, 119, 6, 0.15);
+  
+  --text-primary: #0F172A;
+  --text-secondary: #475569;
+  --text-muted: #64748B;
+  --text-micro: #94A3B8;
 }
 
-/* ============================================================
-   Base resets / global element defaults
-   ============================================================ */
 @layer base {
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
   html { scroll-behavior: smooth; }
 
   body {
-    font-family: "DM Sans", sans-serif;
+    font-family: "Quicksand", sans-serif;
     background: var(--bg-base);
     color: var(--text-primary);
     line-height: 1.6;
-    transition: background 0.2s ease, color 0.2s ease;
+    transition: background 0.4s cubic-bezier(0.4, 0, 0.2, 1);
     overflow-x: hidden;
   }
 
-  h1, h2, h3 { font-family: "Syne", sans-serif; font-weight: 800; }
+  h1, h2, h3, h4, h5, h6 { 
+    font-family: "Dosis", sans-serif; 
+    font-weight: 700; 
+    letter-spacing: 0.02em;
+    color: var(--text-primary);
+    text-transform: uppercase;
+  }
 
-  a { color: var(--accent-teal); text-decoration: none; }
-}
-
-/* ============================================================
-   Keyframe animations (not expressible as Tailwind utilities)
-   ============================================================ */
-@keyframes blobFloat {
-  0%   { transform: translate(0,0) scale(1); }
-  100% { transform: translate(30px,-20px) scale(1.1); }
-}
-@keyframes floatBreath {
-  0%, 100% { transform: translateY(0); }
-  50%       { transform: translateY(-12px); }
-}
-@keyframes orbit {
-  from { transform: rotate(0deg); }
-  to   { transform: rotate(360deg); }
-}
-@keyframes bounce {
-  0%, 100% { transform: translateX(-50%) translateY(0); }
-  50%       { transform: translateX(-50%) translateY(8px); }
-}
-@keyframes glowPulse {
-  0%, 100% { opacity: 0.85; }
-  50%       { opacity: 1; }
-}
-@keyframes slideInRight {
-  from { transform: translateX(100%); opacity: 0; }
-  to   { transform: translateX(0);    opacity: 1; }
-}
-@keyframes pulseDot {
-  0%, 100% { opacity: 1; }
-  50%       { opacity: 0.4; }
-}
-@keyframes barGrow {
-  from { width: 0; }
+  a { 
+    color: inherit; 
+    text-decoration: none; 
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  }
 }
 
-/* ============================================================
-   Component layer — complex or stateful CSS not easily
-   expressed with Tailwind utilities inline
-   ============================================================ */
 @layer components {
+  /* Compiling manually to avoid @apply issues with custom non-standard utilities */
+  .feature-card {
+    background: var(--bg-surface);
+    backdrop-filter: var(--glass-blur);
+    -webkit-backdrop-filter: var(--glass-blur);
+    border: var(--glass-border);
+    border-radius: 28px;
+    box-shadow: var(--shadow-premium);
+    @apply p-8 transition-all duration-500 hover:scale-[1.02] hover:bg-white/[0.03];
+    border-color: var(--border);
+  }
 
-  /* FAQ accordion */
-  .faq-a {
+  .faq-card {
+    background: var(--bg-surface);
+    backdrop-filter: var(--glass-blur);
+    -webkit-backdrop-filter: var(--glass-blur);
+    border: var(--glass-border);
+    box-shadow: var(--shadow-premium);
+    @apply !rounded-2xl transition-all duration-300;
+    border: none;
+    background-color: rgba(255, 255, 255, 0.02);
+  }
+
+  .stat-box {
+    background: var(--bg-surface);
+    backdrop-filter: var(--glass-blur);
+    -webkit-backdrop-filter: var(--glass-blur);
+    border: var(--glass-border);
+    border-radius: 28px;
+    box-shadow: var(--shadow-premium);
+    @apply p-8 text-center flex flex-col items-center justify-center;
+  }
+
+  .nav-glass {
+    background: rgba(5, 6, 11, 0.75);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border-bottom: 1px solid var(--border);
+  }
+
+  .btn-gradient {
+    @apply relative overflow-hidden px-8 py-4 rounded-2xl font-bold transition-all duration-500 flex items-center justify-center gap-2;
+    background: linear-gradient(135deg, var(--accent-teal), #00A3FF);
+    color: #000;
+    box-shadow: 0 10px 30px -10px var(--accent-teal-glow);
+  }
+
+  .btn-gradient:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 20px 40px -10px var(--accent-teal-glow);
+  }
+
+  .btn-outline {
+    @apply relative px-8 py-4 rounded-2xl font-bold transition-all duration-300 border-2 flex items-center justify-center gap-2;
+    border-color: var(--border-bright);
+    background: transparent;
+    color: var(--text-primary);
+  }
+
+  .btn-outline:hover {
+    border-color: var(--accent-teal);
+    color: var(--accent-teal);
+    background: var(--accent-teal-glow);
+  }
+
+  .feature-card:hover {
+    border-color: var(--accent-teal);
+  }
+
+  .text-glow {
+    text-shadow: 0 0 15px var(--accent-teal-glow);
+  }
+
+  .mesh-bg {
+    position: absolute;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background: 
+      radial-gradient(circle at 10% 20%, rgba(157, 0, 255, 0.05) 0%, transparent 50%),
+      radial-gradient(circle at 90% 80%, rgba(0, 245, 255, 0.08) 0%, transparent 50%);
+    z-index: -1;
+  }
+
+  .faq-wrapper {
+    @apply space-y-4 max-w-3xl mx-auto;
+  }
+
+  .faq-card.open {
+    @apply border-l-4;
+    background-color: rgba(255, 255, 255, 0.05);
+    border-left-color: var(--accent-teal);
+  }
+
+  .faq-header {
+    @apply flex justify-between items-center w-full p-6 text-left font-bold text-lg cursor-pointer;
+    font-family: "Dosis", sans-serif;
+  }
+
+  .faq-body {
     max-height: 0;
     overflow: hidden;
-    transition: max-height 0.25s ease-in-out;
+    transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+    @apply px-6 opacity-0;
+  }
+
+  .faq-card.open .faq-body {
+    max-height: 400px;
+    padding-bottom: 24px;
+    opacity: 1;
+  }
+
+  .stats-grid-container {
+    @apply grid grid-cols-1 md:grid-cols-3 gap-6;
+  }
+
+  .stat-value {
+    @apply text-5xl font-extrabold mb-2;
+    font-family: "Dosis", sans-serif;
+  }
+
+  .stat-label {
+    @apply text-xs uppercase tracking-widest font-bold;
     color: var(--text-muted);
-    font-size: 0.95rem;
-    line-height: 1.7;
   }
-  .faq-item.open .faq-a    { max-height: 200px; }
-  .faq-item.open .faq-toggle { transform: rotate(45deg); }
-
-  /* Reveal on scroll */
-  .reveal         { opacity: 0; transform: translateY(20px); transition: opacity 0.6s ease, transform 0.6s ease; }
-  .reveal.visible { opacity: 1; transform: translateY(0); }
-
-  /* Active app tab underline indicator */
-  .app-nav-tab.active::after {
-    content: '';
-    position: absolute;
-    bottom: 0;
-    left: 0.5rem;
-    right: 0.5rem;
-    height: 2px;
-    background: var(--accent-teal);
-    border-radius: 2px 2px 0 0;
-  }
-
-  /* Yield/loading bar */
-  .yield-bar-fill {
-    height: 100%;
-    width: 65%;
-    background: var(--accent-teal);
-    border-radius: 4px;
-    animation: barGrow 2s ease-out;
-  }
-
-  /* Step connector arrow */
-  .step-connector {
-    position: absolute;
-    top: 50%;
-    width: 2rem;
-    right: -2rem;
-    border-top: 2px dashed var(--border);
-    z-index: 1;
-  }
-  .step-connector::after {
-    content: '→';
-    position: absolute;
-    right: -0.5rem;
-    top: -0.75rem;
-    color: var(--accent-teal);
-    font-size: 1rem;
-  }
-
-  /* Shield icon shape */
-  .shield-icon {
-    width: 160px;
-    height: 180px;
-    position: absolute;
-    top: 50%; left: 50%;
-    transform: translate(-50%, -50%);
-    border: 3px solid var(--accent-teal);
-    border-radius: 50% 50% 50% 50% / 40% 40% 60% 60%;
-    box-shadow: 0 0 40px var(--glow-teal), inset 0 0 30px var(--glow-teal);
-  }
-  .shield-icon::after {
-    content: '↑';
-    position: absolute;
-    top: 50%; left: 50%;
-    transform: translate(-50%, -50%);
-    font-size: 3rem;
-    color: var(--accent-teal);
-    font-family: "Syne", sans-serif;
-  }
-
-  /* Hero noise overlay */
-  .hero-noise {
-    position: absolute; inset: 0; opacity: 0.05; z-index: 1;
-    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='1'/%3E%3C/svg%3E");
-    background-size: 200px;
-  }
-
-  /* Comparison table YieldSafe column highlight */
-  .compare-table td:nth-child(3) {
-    color: var(--accent-teal);
-    font-weight: 600;
-    background: var(--glow-teal);
-  }
-
-  /* Toast animation */
-  .toast-slide-in { animation: slideInRight 0.3s ease; }
 }
