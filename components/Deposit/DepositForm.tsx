@@ -54,21 +54,36 @@ export const DepositForm = ({
       ? currentAllowance < depositAmountBigInt
       : true;
 
-  const handleApprove = async () => {
-    if (!depositAmt) return;
-    const success = await approve(depositAmountBigInt);
-    if (success) {
-      const newAlw = await refetchAllowance();
-      setCurrentAllowance(newAlw);
-    }
-  };
+  const [flowStatus, setFlowStatus] = useState<"idle" | "approving" | "depositing">("idle");
 
-  const handleDeposit = async () => {
-    if (!depositAmt) return;
-    const success = await submitDeposit(depositAmountBigInt);
-    if (success) {
-      setDepositAmt("");
-      onSuccess();
+  const handleDepositFlow = async () => {
+    if (!depositAmt || parseFloat(depositAmt) <= 0) return;
+    const assets = parseUnits(depositAmt, USDC_DECIMALS);
+    
+    try {
+      // 1. Check Allowance
+      const allowance = await refetchAllowance();
+      if (allowance < assets) {
+        setFlowStatus("approving");
+        const appSuccess = await approve(assets);
+        if (!appSuccess) {
+          setFlowStatus("idle");
+          return;
+        }
+        await refetchAllowance();
+      }
+      
+      // 2. Deposit
+      setFlowStatus("depositing");
+      const depSuccess = await submitDeposit(assets);
+      if (depSuccess) {
+        setDepositAmt("");
+        onSuccess();
+      }
+    } catch (err) {
+      console.error("Deposit flow failed", err);
+    } finally {
+      setFlowStatus("idle");
     }
   };
 
@@ -96,10 +111,15 @@ export const DepositForm = ({
       <div className="relative mb-6">
         <input
           type="number"
+          min="0"
+          onWheel={(e) => (e.target as HTMLInputElement).blur()}
           placeholder="0.00"
           className="w-full bg-[var(--bg-elevated)] border border-[var(--border)] rounded-xl px-4 py-3 md:py-4 text-xl md:text-2xl font-mono focus:outline-none focus:border-teal transition-all pr-20"
           value={depositAmt}
-          onChange={(e) => setDepositAmt(e.target.value)}
+          onChange={(e) => {
+            const val = e.target.value;
+            if (val === "" || parseFloat(val) >= 0) setDepositAmt(val);
+          }}
         />
         <div className="absolute right-4 top-1/2 -translate-y-1/2 flex items-center gap-2">
           <button
@@ -144,23 +164,13 @@ export const DepositForm = ({
         </div>
       </div>
 
-      {needsApproval ? (
-        <button
-          className="w-full py-3 md:py-4 rounded-xl bg-teal text-white font-bold text-base md:text-lg cursor-pointer border-none transition-all hover:shadow-[0_0_20px_rgba(0,222,200,0.3)] disabled:opacity-50 disabled:cursor-not-allowed"
-          onClick={handleApprove}
-          disabled={isApproving || !depositAmt || parseFloat(depositAmt) <= 0}
-        >
-          {isApproving ? "Approving USDC..." : "Approve USDC"}
-        </button>
-      ) : (
-        <button
-          className="w-full py-3 md:py-4 rounded-xl bg-teal text-white font-bold text-base md:text-lg cursor-pointer border-none transition-all hover:shadow-[0_0_20px_rgba(0,222,200,0.3)] disabled:opacity-50 disabled:cursor-not-allowed"
-          onClick={handleDeposit}
-          disabled={isDepositing || !depositAmt || parseFloat(depositAmt) <= 0}
-        >
-          {isDepositing ? "Depositing..." : "Deposit"}
-        </button>
-      )}
+      <button
+        className="w-full py-3 md:py-4 rounded-xl bg-teal text-white font-bold text-base md:text-lg cursor-pointer border-none transition-all hover:shadow-[0_0_20px_rgba(0,245,255,0.3)] disabled:opacity-50 disabled:cursor-not-allowed"
+        onClick={handleDepositFlow}
+        disabled={flowStatus !== "idle" || !depositAmt || parseFloat(depositAmt) <= 0}
+      >
+        {flowStatus === "approving" ? "1/2 Approving USDC..." : flowStatus === "depositing" ? "2/2 Depositing..." : "Deposit USDC"}
+      </button>
 
       <p className="text-[var(--text-micro)] text-center mt-4 leading-relaxed">
         By depositing, you agree to the protocol terms. Your USDC will be

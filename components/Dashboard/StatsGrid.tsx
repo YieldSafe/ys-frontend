@@ -28,7 +28,6 @@ export const StatsGrid = ({
           cls: "text-primary",
         },
         { val: "4.8%", label: "Current Variable APR", cls: "text-teal" },
-        { val: "Mainnet Stable", label: "Liquidity Depth", cls: "text-gold" },
       ].map((stat, i) => (
         <div
           key={i}

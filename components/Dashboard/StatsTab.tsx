@@ -52,7 +52,7 @@ export const StatsTab = ({
           </div>
           <div className="divide-y divide-white/[0.05]">
             {[
-              { label: "Current Variable APR", val: "4.8%", cls: "text-teal" },
+              { label: "Annual Percentage Rate", val: "4.8%", cls: "text-teal" },
               {
                 label: "Global TVL",
                 val: isLoadingVaultBalance ? "…" : `$${fmt(vaultBalance)}`,

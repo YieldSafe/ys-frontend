@@ -157,8 +157,8 @@ export default function HomePage() {
           />
         </div>
 
-        <div className="max-w-7xl mx-auto px-6 relative z-10 w-full">
-          <div className="max-w-3xl">
+        <div className="max-w-7xl mx-auto px-6 relative z-10 w-full grid lg:grid-cols-2 gap-16 items-center">
+          <div className="reveal visible">
             <div className="inline-flex items-center gap-3 px-4 py-2 rounded-2xl bg-white/[0.03] border border-white/[0.05] text-teal text-[10px] font-black uppercase tracking-[0.2em] mb-8">
               <Zap className="w-4 h-4 fill-teal" />
               Next-Gen Liquidity Aggregator
@@ -201,10 +201,67 @@ export default function HomePage() {
                 <div className="stat-label">Total Vault TVL</div>
               </div>
               <div className="stat-box">
-                <div className="stat-value text-primary"><CountUp end={4207} /></div>
-                <div className="stat-label">Active Savers</div>
+                <div className="stat-value text-primary font-black uppercase tracking-widest text-xs">Verified On Base</div>
+                <div className="stat-label">Mainnet Security</div>
               </div>
             </div>
+          </div>
+
+          {/* Right Side Visuals */}
+          <div className="relative flex flex-col items-center justify-center min-h-[500px] lg:h-[700px] w-full">
+            {/* Animated Chart Card */}
+            <div className="relative lg:absolute lg:top-0 lg:right-0 glass-panel p-10 w-full max-w-[400px] animate-[float_6s_ease-in-out_infinite] border-teal/20 z-20">
+              <div className="flex justify-between items-start mb-8">
+                <div>
+                  <div className="text-xs uppercase tracking-[0.2em] font-black text-muted mb-2">Earnings Growth</div>
+                  <div className="text-4xl font-black text-teal tracking-tighter">+$1,420.69</div>
+                </div>
+                <div className="p-3 bg-teal/10 rounded-2xl text-teal border border-teal/20">
+                  <BarChart3 className="w-8 h-8" />
+                </div>
+              </div>
+              <div className="h-40 w-full relative overflow-hidden rounded-2xl bg-white/[0.02] border border-white/[0.05]">
+                <svg className="absolute inset-0 w-full h-full" viewBox="0 0 100 100" preserveAspectRatio="none">
+                  <path 
+                    d="M0 80 Q 25 70, 50 40 T 100 20" 
+                    fill="none" 
+                    stroke="url(#chartGradientLarge)" 
+                    strokeWidth="4"
+                    className="animate-[drawPath_3s_ease-out_infinite]"
+                  />
+                  <defs>
+                    <linearGradient id="chartGradientLarge" x1="0%" y1="0%" x2="100%" y2="0%">
+                      <stop offset="0%" stopColor="#00F5FF" stopOpacity="0.1" />
+                      <stop offset="100%" stopColor="#00F5FF" />
+                    </linearGradient>
+                  </defs>
+                </svg>
+                {/* Floating data dots */}
+                <div className="absolute top-1/4 right-1/4 w-2 h-2 bg-teal rounded-full animate-pulse shadow-[0_0_10px_#00F5FF]" />
+              </div>
+            </div>
+
+            {/* Security Shield Card */}
+            <div className="relative lg:absolute lg:bottom-0 lg:left-0 glass-panel p-10 w-full max-w-[400px] mt-8 lg:mt-0 animate-[float_8s_ease-in-out_infinite_reverse] border-white/[0.1] z-10">
+              <div className="flex items-center gap-8">
+                <div className="relative shrink-0">
+                  <div className="absolute inset-0 bg-teal/30 blur-2xl animate-pulse rounded-full" />
+                  <div className="relative w-24 h-24 bg-white/[0.03] border border-teal/40 rounded-[32px] flex items-center justify-center text-teal shadow-[inset_0_0_20px_rgba(0,245,255,0.1)]">
+                    <ShieldCheck className="w-12 h-12" />
+                  </div>
+                </div>
+                <div>
+                  <div className="text-lg font-black uppercase tracking-widest mb-2">Vault Secure</div>
+                  <div className="text-[11px] text-muted font-bold uppercase tracking-[0.2em] leading-relaxed">
+                    Institutional Grade<br />
+                    Aave V3 Protocol
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* Background Accent for Mobile */}
+            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full max-w-[500px] aspect-square bg-teal/5 blur-[120px] rounded-full pointer-events-none -z-10" />
           </div>
         </div>
       </section>
@@ -218,9 +275,9 @@ export default function HomePage() {
               <p className="text-secondary text-xl font-medium">We strip away the complexity of DeFi, giving you direct access to professional yield strategies.</p>
             </div>
             <div className="pb-4">
-              <div className="text-teal font-black text-sm uppercase tracking-widest flex items-center gap-2">
-                Learn more about our architecture <ArrowRight className="w-4 h-4" />
-              </div>
+              <a href="https://aave.com/docs" target="_blank" className="text-teal font-black text-sm uppercase tracking-widest flex items-center gap-2 hover:underline">
+                Explore Aave Documentation <ArrowRight className="w-4 h-4" />
+              </a>
             </div>
           </div>
 
@@ -281,6 +338,7 @@ export default function HomePage() {
                   </div>
                   <div className="text-2xl font-bold mb-4 uppercase">100% Verified</div>
                   <p className="text-muted text-sm font-medium">YieldSafe contracts are public, open-source, and verified on Base Sepolia.</p>
+                  <a href="https://base-sepolia.blockscout.com/address/0x01a991c5b234211390613acc2be1104037600106?tab=read_write_contract" target="_blank" className="inline-block mt-6 text-teal text-xs font-black tracking-widest hover:underline">VIEW ON EXPLORER ↗</a>
                 </div>
               </div>
             </div>
@@ -316,9 +374,8 @@ export default function HomePage() {
               </div>
               <p className="text-muted font-medium mb-10">The next-generation non-custodial yield engine. Empowering the future of decentralized finance.</p>
               <div className="flex gap-6">
-                <a href="#" className="w-12 h-12 rounded-2xl bg-white/[0.03] border border-border flex items-center justify-center text-muted hover:text-teal hover:border-teal transition-all"><Twitter className="w-5 h-5" /></a>
-                <a href="#" className="w-12 h-12 rounded-2xl bg-white/[0.03] border border-border flex items-center justify-center text-muted hover:text-teal hover:border-teal transition-all"><Github className="w-5 h-5" /></a>
-                <a href="#" className="w-12 h-12 rounded-2xl bg-white/[0.03] border border-border flex items-center justify-center text-muted hover:text-teal hover:border-teal transition-all"><Globe className="w-5 h-5" /></a>
+                <a href="https://github.com/emdevelopa/ys-frontend" target="_blank" className="w-12 h-12 rounded-2xl bg-white/[0.03] border border-border flex items-center justify-center text-muted hover:text-teal hover:border-teal transition-all"><Github className="w-5 h-5" /></a>
+                <a href="https://aave.com/docs" target="_blank" className="w-12 h-12 rounded-2xl bg-white/[0.03] border border-border flex items-center justify-center text-muted hover:text-teal hover:border-teal transition-all"><Globe className="w-5 h-5" /></a>
               </div>
             </div>
 
@@ -327,23 +384,22 @@ export default function HomePage() {
                 <h5 className="text-[11px] font-black uppercase tracking-[0.3em] text-primary mb-8">Protocol</h5>
                 <ul className="space-y-5 text-sm font-bold text-muted">
                   <li><a href="#how" className="hover:text-teal transition-all">Architecture</a></li>
-                  <li><a href="#stats" className="hover:text-teal transition-all">Analytics</a></li>
                   <li><a href="#security" className="hover:text-teal transition-all">Security</a></li>
+                  <li><a href="https://aave.com/docs" target="_blank" className="hover:text-teal transition-all">Aave Docs</a></li>
                 </ul>
               </div>
               <div>
                 <h5 className="text-[11px] font-black uppercase tracking-[0.3em] text-primary mb-8">Ecosystem</h5>
                 <ul className="space-y-5 text-sm font-bold text-muted">
-                  <li><a href="https://github.com/emdevelopa/ys-frontend" className="hover:text-teal transition-all flex items-center gap-2">GitHub <ExternalLink className="w-3 h-3" /></a></li>
-                  <li><a href="#" className="hover:text-teal transition-all">BaseScan</a></li>
-                  <li><a href="#" className="hover:text-teal transition-all">Aave V3</a></li>
+                  <li><a href="https://github.com/emdevelopa/ys-frontend" target="_blank" className="hover:text-teal transition-all flex items-center gap-2">GitHub <ExternalLink className="w-3 h-3" /></a></li>
+                  <li><a href="https://base-sepolia.blockscout.com/address/0x01a991c5b234211390613acc2be1104037600106?tab=read_write_contract" target="_blank" className="hover:text-teal transition-all">Explorer</a></li>
                 </ul>
               </div>
             </div>
           </div>
           
           <div className="pt-12 border-t border-border flex flex-col md:flex-row justify-between items-center gap-8 text-[10px] font-black uppercase tracking-[0.3em] text-micro">
-            <p>© 2025 YieldSafe Protocol. Handcrafted by emdevelopa.</p>
+            <p>© {new Date().getFullYear()} YieldSafe Protocol. Handcrafted by emdevelopa.</p>
             <div className="flex gap-10">
               <a href="#" className="hover:text-primary">Legal</a>
               <a href="#" className="hover:text-primary">Privacy</a>

@@ -67,10 +67,15 @@ export const WithdrawForm = ({
       <div className="relative mb-6">
         <input
           type="number"
+          min="0"
+          onWheel={(e) => (e.target as HTMLInputElement).blur()}
           placeholder="0.00"
           className="w-full bg-[var(--bg-elevated)] border border-[var(--border)] rounded-xl px-4 py-3 md:py-4 text-xl md:text-2xl font-mono focus:outline-none focus:border-gold transition-all pr-24"
           value={withdrawAmt}
-          onChange={(e) => setWithdrawAmt(e.target.value)}
+          onChange={(e) => {
+            const val = e.target.value;
+            if (val === "" || parseFloat(val) >= 0) setWithdrawAmt(val);
+          }}
         />
         <div className="absolute right-4 top-1/2 -translate-y-1/2 flex items-center gap-2">
           <button

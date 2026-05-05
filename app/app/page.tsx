@@ -218,12 +218,16 @@ export default function AppPage() {
                 
                 <div className="glass-panel p-10 border-gold/10">
                   <h3 className="text-xl font-black mb-6 uppercase tracking-widest flex items-center gap-3">
-                    <EarnIcon /> Smart Yield Info
+                    <EarnIcon /> Protocol Status
                   </h3>
                   <div className="space-y-4 text-sm font-medium text-secondary">
                     <div className="flex justify-between items-center p-4 bg-white/[0.02] rounded-xl border border-white/[0.05]">
                       <span>Protocol Fee</span>
                       <span className="text-primary font-bold">5% (Yield Only)</span>
+                    </div>
+                    <div className="flex justify-between items-center p-4 bg-white/[0.02] rounded-xl border border-white/[0.05]">
+                      <span>Network</span>
+                      <span className="text-teal font-bold">Base Sepolia</span>
                     </div>
                     <div className="flex justify-between items-center p-4 bg-white/[0.02] rounded-xl border border-white/[0.05]">
                       <span>Exit Liquidity</span>
