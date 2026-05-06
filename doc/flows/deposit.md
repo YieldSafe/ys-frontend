@@ -2,9 +2,10 @@
 
 ## Overview
 
-Depositing USDC into YieldSafe is a two-step process:
-1. **Approve** — grant the vault permission to spend USDC (if not already approved)
-2. **Deposit** — transfer USDC to the vault and receive share tokens in return
+Depositing USDC into YieldSafe is a seamless, combined flow:
+1. **One-Click Action** — The user clicks "Deposit USDC" once.
+2. **Sequential Execution** — The app automatically checks allowance, triggers an **Approve** transaction if needed, and then immediately triggers the **Deposit** transaction.
+3. **Receipt & Minting** — USDC is transferred to the vault, and interest-bearing share tokens (aUSDC) are minted to the user.
 
 Share tokens represent the user's proportional ownership of the vault. As the vault earns yield via Aave, each share becomes worth more USDC over time.
 
@@ -15,101 +16,42 @@ Share tokens represent the user's proportional ownership of the vault. As the va
 ```
 ┌─────────────────────────────────────────────────────────────────────┐
 │  USER ACTION                                                        │
-│  Navigates to Deposit tab, enters "100" USDC                       │
+│  Navigates to Deposit tab, enters "100" USDC, clicks "Deposit USDC" │
 └──────────────────────────────┬──────────────────────────────────────┘
                                │
                                ▼
 ┌─────────────────────────────────────────────────────────────────────┐
-│  UI COMPONENT: DepositForm                                          │
+│  STEP 1: ALLOWANCE CHECK                                            │
 │                                                                     │
-│  onChange → setDepositAmt("100")                                    │
-│           → previewByAssets(100_000_000n) [live preview call]      │
-│           → setDepositPreview(sharesResult)                         │
-│                                                                     │
-│  Display: "You will receive X shares"                               │
-│  Display: "Exchange rate: 1 USDC = Y shares"                       │
-└──────────────────────────────┬──────────────────────────────────────┘
+│  currentAllowance < 100_000_000n ?                                  │
+└──────────────┬───────────────────────────────┬──────────────────────┘
+               │                               │
+       [Needs Approval]                [Already Approved]
+               ▼                               │
+┌──────────────────────────┐                   │
+│  SUB-FLOW A: APPROVE     │                   │
+│                          │                   │
+│  useApprove.approve()    │                   │
+│  → Wallet sign → tx.wait()                   │
+└──────────────┬───────────┘                   │
+               │                               │
+               └───────────────┬───────────────┘
                                │
                                ▼
-┌─────────────────────────────────────────────────────────────────────┐
-│  ALLOWANCE CHECK                                                    │
-│                                                                     │
-│  useAllowance.refetchAllowance()                                    │
-│  → usdcContract.allowance(userAddr, vaultAddr)                     │
-│  → currentAllowance: bigint                                        │
-│                                                                     │
-│  needsApproval = currentAllowance < 100_000_000n                   │
-└──────────────────────────────┬──────────────────────────────────────┘
-                               │
-               ┌───────────────┴───────────────┐
-               │ needs approval                │ already approved
-               ▼                               ▼
-┌──────────────────────────┐   ┌───────────────────────────────────┐
-│  STEP 1: APPROVE         │   │  STEP 2: DEPOSIT (skip to this)   │
-│                          │   └───────────────────────────────────┘
-│  User clicks             │
-│  "Approve USDC"          │
-│         │                │
-│         ▼                │
-│  useApprove.approve(     │
-│    100_000_000n          │
-│  )                       │
-│         │                │
-│         ▼                │
-│  USDC.approve(           │
-│    vault,                │
-│    100_000_000n          │
-│  )                       │
-│         │                │
-│         ▼                │
-│  Wallet signs tx ──────► Base Sepolia blockchain
-│         │                │
-│         ▼                │
-│  tx.wait() confirmed     │
-│         │                │
-│         ▼                │
-│  refetchAllowance()      │
-│  → UI shows Deposit btn  │
-└──────────────────────────┘
-               │
-               ▼
 ┌─────────────────────────────────────────────────────────────────────┐
 │  STEP 2: DEPOSIT                                                    │
 │                                                                     │
-│  User clicks "Deposit"                                              │
-│         │                                                           │
-│         ▼                                                           │
 │  useDeposit.submitDeposit(100_000_000n)                             │
-│         │                                                           │
-│         ▼                                                           │
-│  YieldSaveVault.deposit(100_000_000n)                               │
-│  [vault internally calls USDC.transferFrom(user, vault, amount)]   │
-│  [vault deposits USDC into Aave V3, receives aUSDC]                │
-│  [vault mints share tokens to user]                                 │
-│         │                                                           │
-│         ▼                                                           │
-│  Wallet signs tx ──────────────────────────► Base Sepolia           │
-│         │                                                           │
-│         ▼                                                           │
-│  receipt = tx.wait()                                                │
-│  receipt.status === 1 → success                                     │
-│         │                                                           │
-│         ▼                                                           │
-│  onSuccess() called                                                 │
+│  → Wallet sign → tx.wait()                                          │
 └──────────────────────────────┬──────────────────────────────────────┘
                                │
                                ▼
 ┌─────────────────────────────────────────────────────────────────────┐
-│  UI UPDATE: refreshData()                                           │
+│  STEP 3: REFRESH DATA (with Delay)                                  │
 │                                                                     │
-│  Parallel refetch:                                                  │
-│  ├── refetchUsdcBalance()   → wallet USDC balance (decreased)      │
-│  ├── refetchUserShares()    → user shares (increased)              │
-│  ├── refetchUserBalance()   → vault position value (increased)     │
-│  ├── refetchUserDeposits()  → principal recorded                   │
-│  └── refetchVaultBalance()  → TVL (increased)                      │
-│                                                                     │
-│  All state updates → React re-render → UI reflects new values      │
+│  1. Wait 2000ms (allow block confirmation & indexing)               │
+│  2. Parallel refetch of all balances                                 │
+│  3. UI updates with new state                                       │
 └─────────────────────────────────────────────────────────────────────┘
 ```
 
@@ -159,7 +101,7 @@ This means early depositors are rewarded — their shares are proportionally mor
 
 | File | Role in Deposit Flow |
 |------|---------------------|
-| [components/Deposit/DepositForm.tsx](../../components/Deposit/DepositForm.tsx) | UI, form state, orchestrates approve + deposit |
+| [components/Deposit/DepositForm.tsx](../../components/Deposit/DepositForm.tsx) | UI, form state, orchestrates combined flow |
 | [hooks/useAllowance.ts](../../hooks/useAllowance.ts) | Reads current USDC approval |
 | [hooks/useApprove.ts](../../hooks/useApprove.ts) | Sends approve transaction |
 | [hooks/useDeposit.ts](../../hooks/useDeposit.ts) | Sends deposit transaction |

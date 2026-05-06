@@ -164,6 +164,16 @@ export default function HomePage() {
               Next-Gen Liquidity Aggregator
             </div>
             
+            <div className="flex flex-wrap gap-4 mb-10">
+              <div className="px-4 py-2 bg-teal/10 border border-teal/20 rounded-full text-teal text-xs font-black uppercase tracking-widest flex items-center gap-2">
+                <span className="w-2 h-2 bg-teal rounded-full animate-pulse" />
+                Live on Base Sepolia
+              </div>
+              <div className="px-4 py-2 bg-white/5 border border-white/10 rounded-full text-secondary text-xs font-black uppercase tracking-widest">
+                USDC Native
+              </div>
+            </div>
+            
             <h1 className="text-7xl md:text-9xl font-black leading-[0.85] mb-10 tracking-tighter">
               DEPOSIT.<br />
               EARN.<br />
@@ -171,7 +181,8 @@ export default function HomePage() {
             </h1>
             
             <p className="text-xl md:text-2xl text-secondary mb-12 max-w-xl leading-relaxed font-medium">
-              Maximize your USDC yield with institutional-grade security. Non-custodial, audited, and powered by Aave V3.
+              The next-generation vault for your <span className="text-white font-bold">USDC on Base</span>. 
+              Maximize your yield with institutional-grade security. Non-custodial, audited, and powered by Aave V3.
             </p>
 
             <div className="flex flex-col sm:flex-row gap-6">

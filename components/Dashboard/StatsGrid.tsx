@@ -37,7 +37,7 @@ export const StatsGrid = ({
             {stat.label}
           </div>
           <div className={`text-xl font-black font-display uppercase tracking-tight ${stat.cls}`}>
-            {stat.val}
+            {stat.val} {stat.label.includes("TVL") ? "USDC" : ""}
           </div>
         </div>
       ))}

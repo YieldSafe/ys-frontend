@@ -44,8 +44,8 @@ export const RewardsTab = ({
         <div className="text-[10px] uppercase tracking-[0.3em] font-black text-muted mb-4">
           Accrued Yield (Live Profit)
         </div>
-        <div className="text-5xl font-black text-teal mb-2 font-display tracking-tight">
-          ${fmt(accruedYield)}
+        <div className="text-5xl font-black text-teal mb-2 font-display tracking-tight flex items-baseline gap-2">
+          ${fmt(accruedYield)} <span className="text-sm opacity-40">USDC</span>
         </div>
         <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-green-500/10 text-green-500 text-[10px] font-black uppercase tracking-wider">
           <span className="relative flex h-2 w-2">

@@ -129,35 +129,39 @@ Wallet (EIP-1193 provider)                                          │
 ## Frontend-to-Blockchain Communication Diagram
 
 ```
-User clicks "Deposit"
+User clicks "Deposit USDC"
         │
         ▼
 DepositForm.tsx
-  handleDeposit()
+  handleDepositFlow()
         │
-        ├─[if allowance < amount]──► useApprove.approve(amount)
+        ├─[Step 1: Check Allowance]
+        │  │
+        │  ├─[if allowance < amount]──► useApprove.approve(amount)
+        │  │                                    │
+        │  │                            usdcContract.approve(
+        │  │                              YieldSaveVault, amount
+        │  │                            )
+        │  │                                    │
+        │  │                            wallet signs tx → tx.wait()
+        │  │
+        │  └─[allowance sufficient]───► Skip to Step 2
+        │
+        ▼
+        ├─[Step 2: Deposit]──────────► useDeposit.submitDeposit(amount)
         │                                    │
-        │                            usdcContract.approve(
-        │                              YieldSaveVault, amount
-        │                            )
+        │                            vaultContract.deposit(amount)
         │                                    │
         │                            wallet signs tx
         │                                    │
-        │                            tx.wait() → confirmed
+        │                            tx.wait() + receipt.status === 1
         │
-        └─[allowance sufficient]──► useDeposit.submitDeposit(amount)
-                                            │
-                                    vaultContract.deposit(amount)
-                                            │
-                                    wallet signs tx
-                                            │
-                                    tx.wait() + receipt.status === 1
-                                            │
-                                    onSuccess() → refreshData()
-                                            │
-                                    re-fetch all balances
-                                            │
-                                    UI updates with new state
+        ▼
+        ├─[Step 3: Refresh]──────────► handleRefresh()
+        │                                    │
+        │                            wait(2000ms) → re-fetch all
+        │                                    │
+        │                            UI updates with new balances
 ```
 
 ---

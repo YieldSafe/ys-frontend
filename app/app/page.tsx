@@ -75,6 +75,12 @@ export default function AppPage() {
     previewByAssets,
   ]);
 
+  const handleRefresh = useCallback(async () => {
+    // Add a small delay to allow the chain/indexer to catch up
+    await new Promise((resolve) => setTimeout(resolve, 2000));
+    await refreshData();
+  }, [refreshData]);
+
   useEffect(() => {
     const init = async () => {
       await refreshData();
@@ -184,14 +190,14 @@ export default function AppPage() {
                       <DepositForm
                         usdcBalance={usdcBalance}
                         exchangeRate={exchangeRate}
-                        onSuccess={refreshData}
+                        onSuccess={handleRefresh}
                         isConnected={isConnected}
                       />
                     )}
                     {tab === "withdraw" && (
                       <WithdrawForm
                         userShares={userShares}
-                        onSuccess={refreshData}
+                        onSuccess={handleRefresh}
                         isConnected={isConnected}
                       />
                     )}

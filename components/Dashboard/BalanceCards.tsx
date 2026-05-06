@@ -63,8 +63,11 @@ export const BalanceCards = ({
             {card.icon}
           </div>
           <div>
-            <div className="text-3xl font-black mb-1 font-display tracking-tight uppercase">
+            <div className="text-3xl font-black mb-1 font-display tracking-tight uppercase flex items-baseline gap-2">
               {card.val}
+              <span className="text-sm font-bold opacity-40">
+                {card.label.includes("Shares") ? "aUSDC" : "USDC"}
+              </span>
             </div>
             <div className="text-[10px] uppercase tracking-[0.2em] font-black text-muted">
               {card.label}
