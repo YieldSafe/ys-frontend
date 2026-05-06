@@ -1,7 +1,7 @@
 "use client";
 import React from "react";
 import { Shield, Sun, Moon, ArrowUpRight, TrendingUp, Wallet, ArrowDownCircle, BarChart3, HelpCircle, LayoutDashboard } from "lucide-react";
-
+// logo
 export const Logo = () => (
   <div className="relative flex items-center justify-center group">
     <div className="absolute inset-0 bg-teal/20 blur-xl group-hover:bg-teal/40 transition-all rounded-full" />
