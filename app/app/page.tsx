@@ -76,7 +76,10 @@ export default function AppPage() {
   ]);
 
   useEffect(() => {
-    refreshData();
+    const init = async () => {
+      await refreshData();
+    };
+    init();
   }, [refreshData]);
 
   useEffect(() => {

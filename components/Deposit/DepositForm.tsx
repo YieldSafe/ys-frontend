@@ -26,8 +26,8 @@ export const DepositForm = ({
   const [currentAllowance, setCurrentAllowance] = useState<bigint | null>(null);
 
   const { previewByAssets, isPreviewingDeposit } = usePreviewDeposit();
-  const { approve, isApproving } = useApprove();
-  const { submitDeposit, isDepositing } = useDeposit();
+  const { approve } = useApprove();
+  const { submitDeposit } = useDeposit();
   const { refetchAllowance } = useAllowance();
 
   useEffect(() => {
@@ -46,13 +46,6 @@ export const DepositForm = ({
     }
   }, [isConnected, refetchAllowance]);
 
-  const depositAmountBigInt = depositAmt
-    ? parseUnits(depositAmt, USDC_DECIMALS)
-    : BigInt(0);
-  const needsApproval =
-    currentAllowance !== null && depositAmt
-      ? currentAllowance < depositAmountBigInt
-      : true;
 
   const [flowStatus, setFlowStatus] = useState<"idle" | "approving" | "depositing">("idle");
 
