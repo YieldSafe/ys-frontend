@@ -56,7 +56,7 @@ export const DepositForm = ({
     try {
       // 1. Check Allowance
       const allowance = await refetchAllowance();
-      if (allowance < assets) {
+      if (allowance !== null && allowance < assets) {
         setFlowStatus("approving");
         const appSuccess = await approve(assets);
         if (!appSuccess) {
