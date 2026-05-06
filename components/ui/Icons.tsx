@@ -20,4 +20,3 @@ export const StatsIcon = () => <BarChart3 className="w-5 h-5" />;
 export const ExternalLinkIcon = () => <ArrowUpRight className="w-4 h-4" />;
 export const QuestionIcon = () => <HelpCircle className="w-5 h-5" />;
 export const DashboardIcon = () => <LayoutDashboard className="w-5 h-5" />;
-// ..
