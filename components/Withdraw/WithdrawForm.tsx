@@ -1,5 +1,5 @@
 "use client";
-import React, { useState, useEffect, useMemo } from "react";
+import React, { useState, useEffect } from "react";
 import { formatUnits, parseUnits } from "ethers";
 import { usePreviewWithdraw } from "../../hooks/usePreviewWithdraw";
 import { useWithdraw } from "../../hooks/useWithdraw";
@@ -30,18 +30,18 @@ export const WithdrawForm = ({
   const { submitWithdraw, isWithdrawing } = useWithdraw();
 
   useEffect(() => {
-    if (!withdrawAmt || !isConnected) {
-      // Reset preview when input cleared or wallet disconnected
-      setWithdrawPreview(null);
-      return;
-    }
-    try {
+    if (withdrawAmt && isConnected) {
       const shares = parseUnits(withdrawAmt, USDC_DECIMALS);
       previewByShares(shares).then(setWithdrawPreview);
-    } catch (e) {
-      // ignore invalid input
     }
   }, [withdrawAmt, isConnected, previewByShares]);
+
+  // Clear preview when input cleared or wallet disconnected
+  useEffect(() => {
+    if (!withdrawAmt || !isConnected) {
+      setWithdrawPreview(null);
+    }
+  }, [withdrawAmt, isConnected]);
 
   const handleWithdraw = async () => {
     if (!withdrawAmt) return;
@@ -70,14 +70,7 @@ export const WithdrawForm = ({
     };
   }, [withdrawPreview, userShares, userDeposits, withdrawAmt]);
 
-  // fmt helper retained for other uses (if needed)
-  const fmt = (val: bigint | null) =>
-    val
-      ? parseFloat(formatUnits(val, USDC_DECIMALS)).toLocaleString(undefined, {
-          minimumFractionDigits: 2,
-          maximumFractionDigits: 6,
-        })
-      : "0.00";
+
 
   const labelCls = "text-[var(--text-muted)] text-sm";
   const valueCls = "font-mono font-bold text-sm text-[var(--text-primary)]";
