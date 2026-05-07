@@ -39,6 +39,7 @@ export const WithdrawForm = ({
   // Clear preview when input cleared or wallet disconnected
   useEffect(() => {
     if (!withdrawAmt || !isConnected) {
+      // eslint-disable-next-line react-hooks/set-state-in-effect
       setWithdrawPreview(null);
     }
   }, [withdrawAmt, isConnected]);

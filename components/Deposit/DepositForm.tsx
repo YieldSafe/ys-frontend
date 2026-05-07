@@ -4,6 +4,7 @@ import { formatUnits, parseUnits } from "ethers";
 import { usePreviewDeposit } from "../../hooks/usePreviewDeposit";
 import { useApprove } from "../../hooks/useApprove";
 import { useAllowance } from "../../hooks/useAllowance";
+import { useDeposit } from "../../hooks/useDeposit";
 
 
 const USDC_DECIMALS = 6;
