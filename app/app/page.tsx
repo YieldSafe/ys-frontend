@@ -197,6 +197,7 @@ export default function AppPage() {
                     {tab === "withdraw" && (
                       <WithdrawForm
                         userShares={userShares}
+                        userDeposits={userDeposits}
                         onSuccess={handleRefresh}
                         isConnected={isConnected}
                       />

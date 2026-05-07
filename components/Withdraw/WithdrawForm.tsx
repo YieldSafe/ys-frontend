@@ -8,12 +8,14 @@ const USDC_DECIMALS = 6;
 
 interface WithdrawFormProps {
   userShares: bigint | null;
+  userDeposits: bigint | null;
   onSuccess: () => void;
   isConnected: boolean;
 }
 
 export const WithdrawForm = ({
   userShares,
+  userDeposits,
   onSuccess,
   isConnected,
 }: WithdrawFormProps) => {
@@ -29,8 +31,12 @@ export const WithdrawForm = ({
       if (withdrawPreview !== null) setWithdrawPreview(null);
       return;
     }
-    const shares = parseUnits(withdrawAmt, USDC_DECIMALS);
-    previewByShares(shares).then(setWithdrawPreview);
+    try {
+      const shares = parseUnits(withdrawAmt, USDC_DECIMALS);
+      previewByShares(shares).then(setWithdrawPreview);
+    } catch (e) {
+      // Handle invalid input gracefully
+    }
   }, [withdrawAmt, isConnected, previewByShares, withdrawPreview]);
 
   const handleWithdraw = async () => {
@@ -50,6 +56,27 @@ export const WithdrawForm = ({
           maximumFractionDigits: 6,
         })
       : "0.00";
+
+  // Calculate yield accurately based on principal proportion
+  const getYieldInfo = () => {
+    if (!withdrawPreview || !withdrawAmt || !userShares || !userDeposits) return { yield: 0, fee: 0 };
+    
+    const sharesToWithdraw = parseUnits(withdrawAmt, USDC_DECIMALS);
+    const grossAssets = parseFloat(formatUnits(withdrawPreview, USDC_DECIMALS));
+    
+    // Proportional principal calculation
+    // principalForShares = (sharesToWithdraw / totalShares) * totalDeposits
+    const totalShares = parseFloat(formatUnits(userShares, USDC_DECIMALS));
+    const totalDeposits = parseFloat(formatUnits(userDeposits, USDC_DECIMALS));
+    
+    const principalForShares = (parseFloat(withdrawAmt) / totalShares) * totalDeposits;
+    const yieldAmount = Math.max(0, grossAssets - principalForShares);
+    const feeAmount = yieldAmount * 0.05;
+    
+    return { yield: yieldAmount, fee: feeAmount };
+  };
+
+  const { yield: calcYield, fee: calcFee } = getYieldInfo();
 
   const labelCls = "text-[var(--text-muted)] text-sm";
   const valueCls = "font-mono font-bold text-sm text-[var(--text-primary)]";
@@ -108,11 +135,8 @@ export const WithdrawForm = ({
           <div className={infoRow}>
             <span className={labelCls}>Yield earned</span>
             <span className={`${valueCls} text-teal`}>
-              {withdrawPreview !== null && withdrawAmt
-                ? `+${(
-                    parseFloat(formatUnits(withdrawPreview, USDC_DECIMALS)) -
-                    parseFloat(withdrawAmt)
-                  ).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 6 })}`
+              {calcYield > 0
+                ? `+${calcYield.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 6 })}`
                 : "—"}{" "}
               USDC
             </span>
@@ -120,13 +144,8 @@ export const WithdrawForm = ({
           <div className={infoRow}>
             <span className={labelCls}>Fee (5% of yield)</span>
             <span className={`${valueCls} text-danger`}>
-              −
-              {withdrawPreview !== null && withdrawAmt
-                ? (
-                    (parseFloat(formatUnits(withdrawPreview, USDC_DECIMALS)) -
-                      parseFloat(withdrawAmt)) *
-                    0.05
-                  ).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 6 })
+              {calcFee > 0
+                ? `−${calcFee.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 6 })}`
                 : "—"}{" "}
               USDC
             </span>
