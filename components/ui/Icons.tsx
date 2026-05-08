@@ -1,6 +1,7 @@
 "use client";
 import React from "react";
 import { Sun, Moon, ArrowUpRight, TrendingUp, Wallet, ArrowDownCircle, BarChart3, HelpCircle, LayoutDashboard, Landmark } from "lucide-react";
+
 // logo component
 export const Logo = () => (
   <div className="relative flex items-center justify-center text-primary">

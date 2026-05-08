@@ -1,5 +1,6 @@
 "use client";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { useAppKit, useAppKitAccount } from "@reown/appkit/react";
 import { 
   ArrowRight, 
@@ -16,6 +17,10 @@ import { AppNavbar } from "../components/ui/AppNavbar";
 export default function HomePage() {
   const { isConnected, address } = useAppKitAccount();
   const { open } = useAppKit();
+  const router = useRouter();
+
+  // Removed automatic redirect to dashboard if the wallet is connected
+  // so users can still see the landing page
 
   return (
     <div className="min-h-screen selection:bg-primary selection:text-white bg-background text-foreground overflow-hidden">
@@ -41,7 +46,7 @@ export default function HomePage() {
 
             <div className="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start">
               <button 
-                onClick={() => { if(!isConnected) open(); else window.location.href="/app"; }}
+                onClick={() => { if(!isConnected) open(); else router.push("/app"); }}
                 className="btn-primary !px-8 !py-4 text-base group shadow-lg shadow-primary/25"
               >
                 Start Saving
@@ -67,7 +72,7 @@ export default function HomePage() {
                   <div className="text-4xl lg:text-5xl font-extrabold text-foreground tracking-tight">$124,500.00</div>
                 </div>
                 <div className="bg-primary text-white text-sm font-bold px-3 py-1 rounded-md">
-                  +4.2% APY
+                  3.35% - 3.45% APY
                 </div>
               </div>
 

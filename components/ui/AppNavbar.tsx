@@ -40,6 +40,9 @@ export const AppNavbar = ({
 
           {isConnected && address ? (
             <div className="flex items-center gap-4">
+              <Link href="/app" className="hidden sm:flex items-center gap-2 px-4 py-2 text-sm font-bold text-primary hover:bg-primary/10 rounded-lg transition-colors border border-primary/20">
+                Dashboard
+              </Link>
               <div className="hidden sm:flex items-center gap-2 bg-muted px-4 py-2 font-mono text-sm font-semibold rounded-lg border border-border">
                 <div className="w-2 h-2 rounded-full bg-success shadow-sm" />
                 <span className="text-foreground">{shortAddr(address)}</span>

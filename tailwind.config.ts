@@ -11,9 +11,9 @@ const config: Config = {
     extend: {
       colors: {
         // Base backgrounds
-        "bg-base": "var(--bg-base)",
-        "bg-surface": "var(--bg-surface)",
-        "bg-elevated": "var(--bg-elevated)",
+        base: "var(--bg-base)",
+        surface: "var(--bg-surface)",
+        elevated: "var(--bg-elevated)",
         // Border
         border: "var(--border)",
         // Accents
@@ -21,9 +21,9 @@ const config: Config = {
         gold: "var(--accent-gold)",
         danger: "var(--accent-danger)",
         // Text
-        "text-primary": "var(--text-primary)",
-        "text-muted": "var(--text-muted)",
-        "text-micro": "var(--text-micro)",
+        primary: "var(--text-primary)",
+        muted: "var(--text-muted)",
+        micro: "var(--text-micro)",
         // Glows (semi-transparent, better as CSS vars)
         "glow-teal": "var(--glow-teal)",
         "glow-gold": "var(--glow-gold)",

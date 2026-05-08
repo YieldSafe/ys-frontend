@@ -20,24 +20,35 @@ export const WithdrawForm = ({
   isConnected,
 }: WithdrawFormProps) => {
   const [withdrawAmt, setWithdrawAmt] = useState("");
-  const [withdrawPreview, setWithdrawPreview] = useState<bigint | null>(null);
+  const [withdrawPreview, setWithdrawPreview] = useState<{
+    payout: bigint;
+    grossAssets: bigint;
+    fee: bigint;
+  } | null>(null);
 
   const { previewByShares, isPreviewingWithdraw } = usePreviewWithdraw();
   const { submitWithdraw, isWithdrawing } = useWithdraw();
 
   useEffect(() => {
-    if (!withdrawAmt || !isConnected) {
-      // eslint-disable-next-line react-hooks/set-state-in-effect
-      if (withdrawPreview !== null) setWithdrawPreview(null);
-      return;
-    }
-    try {
-      const shares = parseUnits(withdrawAmt, USDC_DECIMALS);
-      previewByShares(shares).then(setWithdrawPreview);
-    } catch {
-      // Handle invalid input gracefully
-    }
-  }, [withdrawAmt, isConnected, previewByShares, withdrawPreview]);
+    const fetchPreview = async () => {
+      if (!withdrawAmt || !isConnected) {
+        setWithdrawPreview(null);
+        return;
+      }
+      try {
+        const shares = parseUnits(withdrawAmt, USDC_DECIMALS);
+        const res = await previewByShares(shares);
+        setWithdrawPreview(res);
+      } catch {
+        // Handle invalid input gracefully
+      }
+    };
+
+    const timer = setTimeout(() => {
+      fetchPreview();
+    }, 0);
+    return () => clearTimeout(timer);
+  }, [withdrawAmt, isConnected, previewByShares]);
 
   const handleWithdraw = async () => {
     if (!withdrawAmt) return;
@@ -49,34 +60,22 @@ export const WithdrawForm = ({
     }
   };
 
-  const fmt = (val: bigint | null) =>
-    val
-      ? parseFloat(formatUnits(val, USDC_DECIMALS)).toLocaleString(undefined, {
-          minimumFractionDigits: 2,
-          maximumFractionDigits: 6,
-        })
-      : "0.00";
-
-  // Calculate yield accurately based on principal proportion
-  const getYieldInfo = () => {
-    if (!withdrawPreview || !withdrawAmt || !userShares || !userDeposits) return { yield: 0, fee: 0 };
+  // Compute payout, yield, and fee using bigint arithmetic for precision
+  const { payout, calcYield, calcFee } = React.useMemo(() => {
+    if (!withdrawPreview || !userShares || !userDeposits) {
+      return { payout: 0, calcYield: 0, calcFee: 0 };
+    }
+    // proportional principal = userDeposits * sharesRequested / userShares
+    const shares = withdrawAmt ? parseUnits(withdrawAmt, USDC_DECIMALS) : BigInt(0);
+    const principalPortion = userShares === BigInt(0) ? BigInt(0) : (userDeposits * shares) / userShares;
+    const yieldAmt = withdrawPreview.grossAssets > principalPortion ? withdrawPreview.grossAssets - principalPortion : BigInt(0);
     
-
-    const grossAssets = parseFloat(formatUnits(withdrawPreview, USDC_DECIMALS));
-    
-    // Proportional principal calculation
-    // principalForShares = (sharesToWithdraw / totalShares) * totalDeposits
-    const totalShares = parseFloat(formatUnits(userShares, USDC_DECIMALS));
-    const totalDeposits = parseFloat(formatUnits(userDeposits, USDC_DECIMALS));
-    
-    const principalForShares = (parseFloat(withdrawAmt) / totalShares) * totalDeposits;
-    const yieldAmount = Math.max(0, grossAssets - principalForShares);
-    const feeAmount = yieldAmount * 0.05;
-    
-    return { yield: yieldAmount, fee: feeAmount };
-  };
-
-  const { yield: calcYield, fee: calcFee } = getYieldInfo();
+    return {
+      payout: Number(formatUnits(withdrawPreview.payout, USDC_DECIMALS)),
+      calcYield: Number(formatUnits(yieldAmt, USDC_DECIMALS)),
+      calcFee: Number(formatUnits(withdrawPreview.fee, USDC_DECIMALS)),
+    };
+  }, [withdrawPreview, userShares, userDeposits, withdrawAmt]);
 
   const labelCls = "text-muted-foreground text-sm";
   const valueCls = "font-mono font-bold text-sm text-foreground";
@@ -123,10 +122,10 @@ export const WithdrawForm = ({
           <div className={infoRow}>
             <span className={labelCls}>You will receive</span>
             <span className={valueCls}>
-              {isPreviewingWithdraw
+              {withdrawPreview
+                ? payout.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 6 })
+                : isPreviewingWithdraw
                 ? "…"
-                : withdrawPreview !== null
-                ? fmt(withdrawPreview)
                 : "—"}{" "}
               USDC
             </span>

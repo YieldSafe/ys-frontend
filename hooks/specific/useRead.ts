@@ -49,6 +49,34 @@ export const useReadVault = () => {
     }
   }, [address, decodeError, vaultContract]);
 
+    const previewWithdraw = useCallback(
+      async (shares: bigint): Promise<{ payout: bigint; grossAssets: bigint; fee: bigint } | null> => {
+        if (!vaultContract) {
+          toast.error("Vault contract not found");
+          return null;
+        }
+        if (!address) {
+          toast.error("Wallet not connected");
+          return null;
+        }
+        try {
+          setIsLoading(true);
+          const result = await vaultContract.previewWithdrawFor(address, shares);
+          return {
+            payout: result[0],
+            grossAssets: result[1],
+            fee: result[2],
+          };
+        } catch (error) {
+          toast.error(await decodeError(error));
+          return null;
+        } finally {
+          setIsLoading(false);
+        }
+      },
+      [address, decodeError, vaultContract],
+    );
+
   const getUserBalance = useCallback(async (): Promise<bigint | null> => {
     if (!vaultContract) {
       toast.error("Vault contract not found");
@@ -83,26 +111,6 @@ export const useReadVault = () => {
       setIsLoading(false);
     }
   }, [address, decodeError, vaultContract]);
-
-  const previewWithdraw = useCallback(
-    async (shares: bigint): Promise<bigint | null> => {
-      if (!vaultContract) {
-        toast.error("Vault contract not found");
-        return null;
-      }
-
-      try {
-        setIsLoading(true);
-        return (await vaultContract.previewWithdraw(shares)) as bigint;
-      } catch (error) {
-        toast.error(await decodeError(error));
-        return null;
-      } finally {
-        setIsLoading(false);
-      }
-    },
-    [decodeError, vaultContract],
-  );
 
   const previewDeposit = useCallback(
     async (amount: bigint): Promise<bigint | null> => {

@@ -6,6 +6,7 @@ export const usePreviewWithdraw = () => {
 
   const previewByShares = useCallback(
     async (shares: bigint) => {
+      // previewWithdraw now returns { payout, grossAssets, fee } or null
       return await previewWithdraw(shares);
     },
     [previewWithdraw],

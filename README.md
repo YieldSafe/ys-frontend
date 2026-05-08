@@ -58,3 +58,7 @@ YieldSafe is non-custodial. Your funds are always in the vault or the underlying
 ---
 
 Built with ❤️ by [emdevelopa](https://github.com/emdevelopa)
+
+
+i want to ask basaed on the screenshot, the APY 0.58% percentage in the screenshot is what is being used for the calculation right for yieldsave users also 
+
