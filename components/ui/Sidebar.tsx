@@ -5,16 +5,18 @@ import Link from "next/link";
 import { Logo, DashboardIcon, DepositIcon, EarnIcon, StatsIcon } from "./Icons";
 import { ThemeToggle } from "./ThemeToggle";
 import { useAppKit, useAppKitAccount } from "@reown/appkit/react";
-import { LogOut } from "lucide-react";
+import { LogOut, X } from "lucide-react";
 
 export type Tab = "deposit" | "withdraw" | "rewards" | "stats";
 
 interface SidebarProps {
   tab: Tab;
   setTab: (tab: Tab) => void;
+  isOpen: boolean;
+  onClose: () => void;
 }
 
-export const Sidebar = ({ tab, setTab }: SidebarProps) => {
+export const Sidebar = ({ tab, setTab, isOpen, onClose }: SidebarProps) => {
   const { address, isConnected } = useAppKitAccount();
   const { open } = useAppKit();
 
@@ -35,14 +37,25 @@ export const Sidebar = ({ tab, setTab }: SidebarProps) => {
   );
 
   return (
-    <div className="w-64 border-r border-border h-screen sticky top-0 bg-card flex flex-col hidden lg:flex">
-      <div className="p-6">
+    <>
+      {/* Mobile Overlay */}
+      <div 
+        className={`fixed inset-0 z-40 bg-background/80 backdrop-blur-sm lg:hidden transition-opacity duration-300 ${isOpen ? "opacity-100 pointer-events-auto" : "opacity-0 pointer-events-none"}`}
+        onClick={onClose} 
+      />
+      
+      {/* Sidebar Content */}
+      <div className={`fixed lg:static top-0 left-0 h-screen w-64 border-r border-border bg-card flex flex-col z-50 transform transition-transform duration-300 ease-in-out ${isOpen ? "translate-x-0" : "-translate-x-full lg:translate-x-0"}`}>
+        <div className="p-6 flex items-center justify-between">
         <Link href="/" className="flex items-center gap-3">
           <Logo />
           <span className="font-bold text-xl tracking-tight text-foreground">
             YieldSave
           </span>
         </Link>
+        <button onClick={onClose} className="lg:hidden p-2 text-muted-foreground hover:text-foreground">
+          <X className="w-5 h-5" />
+        </button>
       </div>
 
       <nav className="flex-1 px-4 space-y-2 mt-4">
@@ -89,6 +102,7 @@ export const Sidebar = ({ tab, setTab }: SidebarProps) => {
           </button>
         )}
       </div>
-    </div>
+      </div>
+    </>
   );
 };

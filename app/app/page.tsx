@@ -14,6 +14,8 @@ import { usePreviewDeposit } from "../../hooks/usePreviewDeposit";
 // Components
 import { AppNavbar } from "../../components/ui/AppNavbar";
 import { Sidebar, Tab } from "../../components/ui/Sidebar";
+import { Logo } from "../../components/ui/Icons";
+import { Menu } from "lucide-react";
 import { DepositForm } from "../../components/Deposit/DepositForm";
 import { WithdrawForm } from "../../components/Withdraw/WithdrawForm";
 
@@ -21,6 +23,7 @@ const USDC_DECIMALS = 6;
 
 export default function AppPage() {
   const [tab, setTab] = useState<Tab>("deposit");
+  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
 
   const [usdcBalance, setUsdcBalance] = useState<bigint | null>(null);
   const [userShares, setUserShares] = useState<bigint | null>(null);
@@ -115,12 +118,25 @@ export default function AppPage() {
 
   return (
     <div className="flex h-screen bg-background overflow-hidden">
-      <Sidebar tab={tab} setTab={setTab} />
+      <Sidebar tab={tab} setTab={(t) => { setTab(t); setIsSidebarOpen(false); }} isOpen={isSidebarOpen} onClose={() => setIsSidebarOpen(false)} />
 
-      <main className="flex-1 overflow-y-auto p-8 lg:p-12 relative">
+      <main className="flex-1 overflow-y-auto relative flex flex-col">
         <div className="fintech-grid" />
+        
+        {/* Mobile Header */}
+        <div className="lg:hidden flex items-center justify-between p-4 border-b border-border bg-background/80 backdrop-blur-xl sticky top-0 z-40">
+           <div className="flex items-center gap-3">
+             <Logo />
+             <span className="font-bold text-lg tracking-tight text-foreground">YieldSave</span>
+           </div>
+           <button onClick={() => setIsSidebarOpen(true)} className="p-2 text-muted-foreground hover:text-foreground">
+             <Menu className="w-6 h-6" />
+           </button>
+        </div>
+
+        <div className="p-4 sm:p-8 lg:p-12 flex-1 relative z-10">
         {tab === "deposit" ? (
-          <div className="max-w-6xl mx-auto space-y-8 relative z-10">
+          <div className="max-w-6xl mx-auto space-y-8">
             {/* Top Stats Section */}
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
               {/* Main Balance Card */}
@@ -258,6 +274,7 @@ export default function AppPage() {
             <p>Section Under Construction</p>
           </div>
         )}
+        </div>
       </main>
     </div>
   );
