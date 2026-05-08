@@ -33,7 +33,7 @@ export default function HomePage() {
           <div className="max-w-xl opacity-0 animate-fade-up text-center lg:text-left mx-auto lg:mx-0" style={{ animationDelay: '100ms' }}>
             <div className="inline-flex items-center justify-center lg:justify-start gap-2 px-3 py-1 rounded-lg bg-success/10 text-success text-xs font-bold uppercase tracking-widest mb-8">
               <div className="w-2 h-2 rounded-full bg-success animate-pulse" />
-              Live on Base Mainnet
+              Live on Base Testnet
             </div>
             
             <h1 className="text-5xl lg:text-7xl font-extrabold leading-[1.1] mb-6 tracking-tight text-foreground">

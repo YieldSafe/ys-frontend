@@ -19,6 +19,7 @@ import { Logo } from "../../components/ui/Icons";
 import { Menu, ArrowUpRight, TrendingUp, Wallet, ArrowDownCircle } from "lucide-react";
 import { DepositForm } from "../../components/Deposit/DepositForm";
 import { WithdrawForm } from "../../components/Withdraw/WithdrawForm";
+import { ThemeToggle } from "../../components/ui/ThemeToggle";
 
 const USDC_DECIMALS = 6;
 
@@ -342,9 +343,12 @@ export default function AppPage() {
              <Logo />
              <span className="font-bold text-lg tracking-tight text-foreground">YieldSave</span>
            </div>
-           <button onClick={() => setIsSidebarOpen(true)} className="p-2 text-muted-foreground hover:text-foreground">
-             <Menu className="w-6 h-6" />
-           </button>
+           <div className="flex items-center gap-2">
+             <ThemeToggle />
+             <button onClick={() => setIsSidebarOpen(true)} className="p-2 text-muted-foreground hover:text-foreground">
+               <Menu className="w-6 h-6" />
+             </button>
+           </div>
         </div>
 
         <div className="p-4 sm:p-8 lg:p-12 flex-1 relative z-10">

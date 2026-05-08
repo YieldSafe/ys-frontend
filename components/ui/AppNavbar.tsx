@@ -34,9 +34,7 @@ export const AppNavbar = ({
         </div>
 
         <div className="flex items-center gap-4">
-          <div className="hidden sm:block">
-            <ThemeToggle />
-          </div>
+          <ThemeToggle />
 
           {isConnected && address ? (
             <div className="flex items-center gap-4">
