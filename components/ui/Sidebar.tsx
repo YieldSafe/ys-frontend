@@ -2,12 +2,12 @@
 
 import React from "react";
 import Link from "next/link";
-import { Logo, DashboardIcon, DepositIcon, EarnIcon, StatsIcon } from "./Icons";
+import { Logo, DashboardIcon, DepositIcon, EarnIcon } from "./Icons";
 import { ThemeToggle } from "./ThemeToggle";
 import { useAppKit, useAppKitAccount } from "@reown/appkit/react";
 import { LogOut, X } from "lucide-react";
 
-export type Tab = "deposit" | "withdraw" | "rewards" | "stats";
+export type Tab = "dashboard" | "portfolio" | "activity";
 
 interface SidebarProps {
   tab: Tab;
@@ -59,10 +59,9 @@ export const Sidebar = ({ tab, setTab, isOpen, onClose }: SidebarProps) => {
       </div>
 
       <nav className="flex-1 px-4 space-y-2 mt-4">
-        {navItem("deposit", "Dashboard", <DashboardIcon />)}
-        {navItem("withdraw", "Portfolio", <DepositIcon />)}
-        {navItem("rewards", "Activity", <EarnIcon />)}
-        {navItem("stats", "Settings", <StatsIcon />)}
+        {navItem("dashboard", "Dashboard", <DashboardIcon />)}
+        {navItem("portfolio", "Portfolio", <DepositIcon />)}
+        {navItem("activity", "Activity", <EarnIcon />)}
       </nav>
 
       <div className="p-6 border-t border-border space-y-4">

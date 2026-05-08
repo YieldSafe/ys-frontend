@@ -19,9 +19,6 @@ export const AppNavbar = ({
 
   return (
     <nav className="fixed top-0 left-0 right-0 z-[100] bg-background/80 backdrop-blur-xl border-b border-border h-20 px-6">
-=======
-    <nav className="fixed top-0 left-0 right-0 z-[100] bg-base/80 backdrop-blur-xl border-b border-border h-20 px-6">
->>>>>>> Stashed changes
       <div className="max-w-7xl mx-auto h-full flex items-center justify-between">
         <Link href="/" className="flex items-center gap-4 group">
           <Logo />
@@ -37,32 +34,22 @@ export const AppNavbar = ({
         </div>
 
         <div className="flex items-center gap-4">
-<<<<<<< Updated upstream
           <div className="hidden sm:block">
             <ThemeToggle />
           </div>
-=======
-          <button
-            className="p-3 rounded-2xl bg-white/[0.02] border border-border hover:border-teal transition-all text-muted"
-            onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
-          >
-            {theme === "dark" ? <SunIcon /> : <MoonIcon />}
-          </button>
->>>>>>> Stashed changes
 
           {isConnected && address ? (
             <div className="flex items-center gap-4">
+              <Link href="/app" className="hidden sm:flex items-center gap-2 px-4 py-2 text-sm font-bold text-primary hover:bg-primary/10 rounded-lg transition-colors border border-primary/20">
+                Dashboard
+              </Link>
               <div className="hidden sm:flex items-center gap-2 bg-muted px-4 py-2 font-mono text-sm font-semibold rounded-lg border border-border">
                 <div className="w-2 h-2 rounded-full bg-success shadow-sm" />
                 <span className="text-foreground">{shortAddr(address)}</span>
               </div>
               <button
                 onClick={() => open()}
-<<<<<<< Updated upstream
                 className="btn-outline !py-2 !px-4 !text-sm border-danger text-danger hover:bg-danger/10 hover:border-danger hover:text-danger"
-=======
-                className="btn-outline !py-2.5 !px-6 !text-xs border-danger/30 text-danger hover:bg-danger/10 hover:border-danger hover:text-danger"
->>>>>>> Stashed changes
               >
                 Disconnect
               </button>
@@ -70,11 +57,7 @@ export const AppNavbar = ({
           ) : (
             <button
               onClick={() => open()}
-<<<<<<< Updated upstream
               className="btn-primary !py-2 !px-6 !text-sm"
-=======
-              className="btn-primary !py-2.5 !px-8 !text-xs"
->>>>>>> Stashed changes
             >
               Connect Wallet
             </button>
@@ -84,4 +67,3 @@ export const AppNavbar = ({
     </nav>
   );
 };
-

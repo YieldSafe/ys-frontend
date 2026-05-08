@@ -67,11 +67,16 @@ export const useAaveApr = () => {
   };
 
   useEffect(() => {
-    fetchApr();
+    const timer = setTimeout(() => {
+      fetchApr();
+    }, 0);
 
     // Refresh every 60 seconds — Aave rates update per block but UI refresh once/min is sufficient
     const interval = setInterval(fetchApr, 60_000);
-    return () => clearInterval(interval);
+    return () => {
+      clearTimeout(timer);
+      clearInterval(interval);
+    };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 

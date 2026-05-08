@@ -1,15 +1,16 @@
 "use client";
 import React from "react";
-import { Tab } from "../ui/Sidebar";
 import { DepositIcon, WithdrawIcon, EarnIcon } from "../ui/Icons";
 
+type ActionTab = "deposit" | "withdraw" | "rewards";
+
 interface ActionTabsProps {
-  activeTab: Tab;
-  setActiveTab: (tab: Tab) => void;
+  activeTab: ActionTab;
+  setActiveTab: (tab: ActionTab) => void;
 }
 
 export const ActionTabs = ({ activeTab, setActiveTab }: ActionTabsProps) => {
-  const tabs: { id: Tab; label: string; icon: React.ReactNode }[] = [
+  const tabs: { id: ActionTab; label: string; icon: React.ReactNode }[] = [
     { id: "deposit", label: "Deposit", icon: <DepositIcon /> },
     { id: "withdraw", label: "Withdraw", icon: <WithdrawIcon /> },
     { id: "rewards", label: "Rewards", icon: <EarnIcon /> },
