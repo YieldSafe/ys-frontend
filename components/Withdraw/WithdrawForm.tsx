@@ -30,24 +30,17 @@ export const WithdrawForm = ({
   const { submitWithdraw, isWithdrawing } = useWithdraw();
 
   useEffect(() => {
-    if (withdrawAmt && isConnected) {
+    if (!withdrawAmt || !isConnected) {
+      setWithdrawPreview(null);
+      return;
+    }
+    try {
       const shares = parseUnits(withdrawAmt, USDC_DECIMALS);
       previewByShares(shares).then(setWithdrawPreview);
-<<<<<<< HEAD
-=======
-    } catch {
-      // Handle invalid input gracefully
->>>>>>> upstream/main
+    } catch (err) {
+      console.error("Invalid withdraw amount", err);
     }
   }, [withdrawAmt, isConnected, previewByShares]);
-
-  // Clear preview when input cleared or wallet disconnected
-  useEffect(() => {
-    if (!withdrawAmt || !isConnected) {
-      // eslint-disable-next-line react-hooks/set-state-in-effect
-      setWithdrawPreview(null);
-    }
-  }, [withdrawAmt, isConnected]);
 
   const handleWithdraw = async () => {
     if (!withdrawAmt) return;
@@ -64,9 +57,7 @@ export const WithdrawForm = ({
     if (!withdrawPreview || !userShares || !userDeposits) {
       return { payout: 0, calcYield: 0, calcFee: 0 };
     }
-    // shares being withdrawn as bigint
     const shares = withdrawAmt ? parseUnits(withdrawAmt, USDC_DECIMALS) : BigInt(0);
-    // proportional principal = userDeposits * shares / userShares
     const principalPortion = userShares === BigInt(0) ? BigInt(0) : (userDeposits * shares) / userShares;
     const yieldAmt = withdrawPreview.grossAssets > principalPortion ? withdrawPreview.grossAssets - principalPortion : BigInt(0);
     return {
@@ -76,37 +67,14 @@ export const WithdrawForm = ({
     };
   }, [withdrawPreview, userShares, userDeposits, withdrawAmt]);
 
-<<<<<<< HEAD
-=======
-  // Calculate yield accurately based on principal proportion
-  const getYieldInfo = () => {
-    if (!withdrawPreview || !withdrawAmt || !userShares || !userDeposits) return { yield: 0, fee: 0 };
-    
-
-    const grossAssets = parseFloat(formatUnits(withdrawPreview, USDC_DECIMALS));
-    
-    // Proportional principal calculation
-    // principalForShares = (sharesToWithdraw / totalShares) * totalDeposits
-    const totalShares = parseFloat(formatUnits(userShares, USDC_DECIMALS));
-    const totalDeposits = parseFloat(formatUnits(userDeposits, USDC_DECIMALS));
-    
-    const principalForShares = (parseFloat(withdrawAmt) / totalShares) * totalDeposits;
-    const yieldAmount = Math.max(0, grossAssets - principalForShares);
-    const feeAmount = yieldAmount * 0.05;
-    
-    return { yield: yieldAmount, fee: feeAmount };
-  };
->>>>>>> upstream/main
-
-
-  const labelCls = "text-muted-foreground text-sm";
-  const valueCls = "font-mono font-bold text-sm text-foreground";
+  const labelCls = "text-muted text-sm";
+  const valueCls = "font-mono font-bold text-sm text-primary";
   const infoRow = "flex justify-between items-center py-2";
 
   return (
     <div className="space-y-6">
       <div className="flex justify-between items-center">
-        <div className="text-xs font-mono text-muted-foreground bg-muted px-2 py-1 rounded">
+        <div className="text-xs font-mono text-muted bg-white/[0.03] px-2 py-1 rounded">
           Shares: {userShares ? formatUnits(userShares, USDC_DECIMALS) : "0"}
         </div>
       </div>
@@ -121,7 +89,7 @@ export const WithdrawForm = ({
           value={withdrawAmt}
           onChange={(e) => {
             const val = e.target.value;
-            if (val === "" || parseFloat(val) >= 0) setWithdrawAmt(val);
+            if (val === "" || parseFloat(val) >= 0) setDepositAmt(val);
           }}
         />
         <div className="absolute right-4 top-1/2 -translate-y-1/2 flex items-center gap-2">
@@ -133,13 +101,13 @@ export const WithdrawForm = ({
           >
             MAX
           </button>
-          <span className="font-bold text-sm text-muted-foreground">
+          <span className="font-bold text-sm text-muted">
             aUSDC
           </span>
         </div>
       </div>
 
-      <div className="bg-muted/50 rounded-lg p-4">
+      <div className="bg-white/[0.02] rounded-lg p-4">
         <div className="mt-1">
           <div className={infoRow}>
             <span className={labelCls}>You will receive</span>
@@ -185,7 +153,7 @@ export const WithdrawForm = ({
         {isWithdrawing ? "Withdrawing..." : "Withdraw aUSDC"}
       </button>
 
-      <p className="text-xs text-muted-foreground text-center leading-relaxed px-4">
+      <p className="text-xs text-muted text-center leading-relaxed px-4">
         Withdrawals are processed instantly. Your shares will be burned and the
         underlying USDC + yield will be sent to your wallet.
       </p>

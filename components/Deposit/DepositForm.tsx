@@ -25,7 +25,6 @@ export const DepositForm = ({
   const [depositAmt, setDepositAmt] = useState("");
   const [depositPreview, setDepositPreview] = useState<bigint | null>(null);
 
-
   const { previewByAssets, isPreviewingDeposit } = usePreviewDeposit();
   const { approve } = useApprove();
   const { submitDeposit } = useDeposit();
@@ -33,16 +32,16 @@ export const DepositForm = ({
 
   useEffect(() => {
     if (!depositAmt || !isConnected) {
-      // eslint-disable-next-line react-hooks/set-state-in-effect
       if (depositPreview !== null) setDepositPreview(null);
       return;
     }
-    const assets = parseUnits(depositAmt, USDC_DECIMALS);
-    previewByAssets(assets).then(setDepositPreview);
+    try {
+      const assets = parseUnits(depositAmt, USDC_DECIMALS);
+      previewByAssets(assets).then(setDepositPreview);
+    } catch (_) {
+      // ignore
+    }
   }, [depositAmt, isConnected, previewByAssets, depositPreview]);
-
-
-
 
   const [flowStatus, setFlowStatus] = useState<"idle" | "approving" | "depositing">("idle");
 
@@ -51,7 +50,6 @@ export const DepositForm = ({
     const assets = parseUnits(depositAmt, USDC_DECIMALS);
     
     try {
-      // 1. Check Allowance
       const allowance = await refetchAllowance();
       if (allowance !== null && allowance < assets) {
         setFlowStatus("approving");
@@ -63,7 +61,6 @@ export const DepositForm = ({
         await refetchAllowance();
       }
       
-      // 2. Deposit
       setFlowStatus("depositing");
       const depSuccess = await submitDeposit(assets);
       if (depSuccess) {
@@ -85,14 +82,14 @@ export const DepositForm = ({
         })
       : "0.00";
 
-  const labelCls = "text-muted-foreground text-sm";
-  const valueCls = "font-mono font-bold text-sm text-foreground";
+  const labelCls = "text-muted text-sm";
+  const valueCls = "font-mono font-bold text-sm text-primary";
   const infoRow = "flex justify-between items-center py-2";
 
   return (
     <div className="space-y-6">
       <div className="flex justify-between items-center">
-        <div className="text-xs font-mono text-muted-foreground bg-muted px-2 py-1 rounded">
+        <div className="text-xs font-mono text-muted bg-white/[0.03] px-2 py-1 rounded">
           Balance: {usdcBalance ? parseFloat(formatUnits(usdcBalance, USDC_DECIMALS)).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 }) : "0.00"}
         </div>
       </div>
@@ -103,7 +100,7 @@ export const DepositForm = ({
           min="0"
           onWheel={(e) => (e.target as HTMLInputElement).blur()}
           placeholder="0.00"
-          className="premium-input text-2xl pr-24 py-4 font-mono font-bold"
+          className="premium-input text-2xl pr-20 py-4 font-mono font-bold"
           value={depositAmt}
           onChange={(e) => {
             const val = e.target.value;
@@ -119,13 +116,13 @@ export const DepositForm = ({
           >
             MAX
           </button>
-          <span className="font-bold text-sm text-muted-foreground">
+          <span className="font-bold text-sm text-muted">
             USDC
           </span>
         </div>
       </div>
 
-      <div className="bg-muted/50 rounded-lg p-4">
+      <div className="bg-white/[0.02] rounded-lg p-4">
         <div className="mt-1">
           <div className={infoRow}>
             <span className={labelCls}>You will receive</span>
@@ -161,7 +158,7 @@ export const DepositForm = ({
         {flowStatus === "approving" ? "1/2 Approving USDC..." : flowStatus === "depositing" ? "2/2 Depositing..." : "Deposit USDC"}
       </button>
 
-      <p className="text-xs text-muted-foreground text-center leading-relaxed px-4">
+      <p className="text-xs text-muted text-center leading-relaxed px-4">
         By depositing, you agree to the protocol terms. Your USDC will be
         deployed to Aave V3. You can withdraw anytime.
       </p>

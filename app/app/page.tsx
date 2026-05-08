@@ -14,7 +14,7 @@ import { usePreviewDeposit } from "../../hooks/usePreviewDeposit";
 // Components
 import { AppNavbar } from "../../components/ui/AppNavbar";
 import { Sidebar, Tab } from "../../components/ui/Sidebar";
-import { Logo } from "../../components/ui/Icons";
+import { Logo, DashboardIcon, EarnIcon } from "../../components/ui/Icons";
 import { Menu } from "lucide-react";
 import { DepositForm } from "../../components/Deposit/DepositForm";
 import { WithdrawForm } from "../../components/Withdraw/WithdrawForm";
@@ -70,12 +70,10 @@ export default function AppPage() {
   ]);
 
   const handleRefresh = useCallback(async () => {
-    await new Promise((resolve) => setTimeout(resolve, 2000));
     await refreshData();
   }, [refreshData]);
 
   useEffect(() => {
-    // eslint-disable-next-line react-hooks/set-state-in-effect
     refreshData();
   }, [refreshData]);
 
@@ -87,7 +85,6 @@ export default function AppPage() {
         })
       : "0.00";
 
-  // Dummy analytics data based on Figma
   const totalYield = userBalance && userDeposits ? userBalance - userDeposits : null;
 
   if (!isConnected) {
@@ -98,15 +95,19 @@ export default function AppPage() {
           address={address}
           open={open}
         />
-        <div className="pt-32 flex items-center justify-center p-6 min-h-screen relative overflow-hidden">
-          <div className="fintech-grid" />
-          <div className="premium-card text-center max-w-md w-full shadow-lg relative z-10">
-            <h1 className="text-2xl font-bold mb-3">Ready to Earn?</h1>
-            <p className="text-muted-foreground mb-8">
-              Connect your wallet to access your non-custodial yield dashboard.
+        <div className="fixed inset-0 mesh-bg z-0" />
+        
+        <div className="relative z-10 pt-32 flex items-center justify-center p-6 min-h-screen">
+          <div className="glass-panel p-12 md:p-16 text-center max-w-xl w-full shadow-2xl">
+            <div className="w-20 h-20 bg-primary/10 rounded-[32px] flex items-center justify-center text-primary mx-auto mb-10 border border-primary/20">
+              <DashboardIcon />
+            </div>
+            <h1 className="text-4xl font-black mb-4 tracking-tight uppercase">Ready to Earn?</h1>
+            <p className="text-muted text-lg mb-10 font-medium">
+              Securely connect your wallet to access your non-custodial yield dashboard.
             </p>
             <button
-              className="btn-primary w-full"
+              className="btn-primary w-full !text-lg !py-5"
               onClick={() => open()}
             >
               Connect Wallet
@@ -230,41 +231,20 @@ export default function AppPage() {
               </div>
             </div>
 
-            {/* Recent Activity */}
+            {/* Protocol Status */}
             <div className="premium-card">
-              <div className="flex justify-between items-center mb-6">
-                <h3 className="text-lg font-bold">Recent Activity</h3>
-                <button className="text-primary text-sm font-semibold hover:underline">View All</button>
-              </div>
-              <div className="space-y-4">
-                <div className="flex items-center justify-between p-4 bg-muted/50 rounded-lg">
-                  <div className="flex items-center gap-4">
-                    <div className="w-10 h-10 rounded-lg bg-success/20 text-success flex items-center justify-center">
-                      ↓
-                    </div>
-                    <div>
-                      <p className="font-bold text-foreground">Deposit to Vault</p>
-                      <p className="text-xs text-muted-foreground">Today, 14:30</p>
-                    </div>
+              <div className="glass-panel p-10 border-white/5">
+                <h3 className="text-xl font-black mb-6 uppercase tracking-widest flex items-center gap-3">
+                  <EarnIcon /> Protocol Status
+                </h3>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <div className="flex justify-between items-center p-4 bg-white/[0.02] rounded-xl border border-white/[0.05]">
+                    <span className="text-muted text-sm font-medium">Protocol Fee</span>
+                    <span className="text-primary font-bold">5% (Yield Only)</span>
                   </div>
-                  <div className="text-right">
-                    <p className="font-bold text-foreground">+50,000 USDC</p>
-                    <p className="text-xs text-muted-foreground">Confirmed</p>
-                  </div>
-                </div>
-                <div className="flex items-center justify-between p-4 bg-muted/50 rounded-lg">
-                  <div className="flex items-center gap-4">
-                    <div className="w-10 h-10 rounded-lg bg-primary/20 text-primary flex items-center justify-center">
-                      ◈
-                    </div>
-                    <div>
-                      <p className="font-bold text-foreground">Yield Distribution</p>
-                      <p className="text-xs text-muted-foreground">Yesterday</p>
-                    </div>
-                  </div>
-                  <div className="text-right">
-                    <p className="font-bold text-success">+$142.50</p>
-                    <p className="text-xs text-muted-foreground">Added</p>
+                  <div className="flex justify-between items-center p-4 bg-white/[0.02] rounded-xl border border-white/[0.05]">
+                    <span className="text-muted text-sm font-medium">Withdrawal Limit</span>
+                    <span className="text-primary font-bold">Unlimited</span>
                   </div>
                 </div>
               </div>

@@ -1,6 +1,7 @@
 "use client";
 import React from "react";
 import { formatUnits } from "ethers";
+import { useAaveApr } from "../../hooks/useAaveApr";
 
 interface StatsGridProps {
   vaultBalance: bigint | null;
@@ -11,6 +12,8 @@ export const StatsGrid = ({
   vaultBalance,
   isLoadingVaultBalance,
 }: StatsGridProps) => {
+  const { apr, isLoading: isLoadingApr } = useAaveApr();
+
   const fmt = (val: bigint | null) =>
     val
       ? parseFloat(formatUnits(val, 6)).toLocaleString(undefined, {
@@ -18,6 +21,8 @@ export const StatsGrid = ({
           maximumFractionDigits: 6,
         })
       : "0.00";
+
+  const aprDisplay = isLoadingApr ? "…" : (apr ?? "—");
 
   return (
     <div className="space-y-4">
@@ -27,7 +32,11 @@ export const StatsGrid = ({
           label: "Total Vault TVL",
           cls: "text-primary",
         },
-        { val: "4.8%", label: "Current Variable APR", cls: "text-teal" },
+        {
+          val: aprDisplay,
+          label: "Current Variable APR",
+          cls: "text-teal",
+        },
       ].map((stat, i) => (
         <div
           key={i}
