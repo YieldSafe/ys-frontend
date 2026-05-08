@@ -2,7 +2,6 @@
 import { useState, useEffect, useCallback } from "react";
 import { useAppKitAccount, useAppKit } from "@reown/appkit/react";
 import { formatUnits, parseUnits } from "ethers";
-import { DashboardIcon, StatsIcon, EarnIcon } from "../../components/ui/Icons";
 
 // Hooks
 import { useUsdcBalance } from "../../hooks/useUsdcBalance";
@@ -13,23 +12,18 @@ import { useVaultBalance } from "../../hooks/useVaultBalance";
 import { usePreviewDeposit } from "../../hooks/usePreviewDeposit";
 
 // Components
-import { AppNavbar, Tab } from "../../components/ui/AppNavbar";
-import { BalanceCards } from "../../components/Dashboard/BalanceCards";
-import { StatsGrid } from "../../components/Dashboard/StatsGrid";
-import { ActionTabs } from "../../components/Dashboard/ActionTabs";
+import { AppNavbar } from "../../components/ui/AppNavbar";
+import { Sidebar, Tab } from "../../components/ui/Sidebar";
+import { Logo } from "../../components/ui/Icons";
+import { Menu } from "lucide-react";
 import { DepositForm } from "../../components/Deposit/DepositForm";
 import { WithdrawForm } from "../../components/Withdraw/WithdrawForm";
-import { RewardsTab } from "../../components/Dashboard/RewardsTab";
-import { StatsTab } from "../../components/Dashboard/StatsTab";
 
 const USDC_DECIMALS = 6;
 
 export default function AppPage() {
   const [tab, setTab] = useState<Tab>("deposit");
-  const [theme, setTheme] = useState(() => {
-    if (typeof window !== "undefined") return localStorage.getItem("theme") ?? "dark";
-    return "dark";
-  });
+  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
 
   const [usdcBalance, setUsdcBalance] = useState<bigint | null>(null);
   const [userShares, setUserShares] = useState<bigint | null>(null);
@@ -41,11 +35,11 @@ export default function AppPage() {
   const { address, isConnected } = useAppKitAccount();
   const { open } = useAppKit();
 
-  const { refetchUsdcBalance, isLoadingUsdcBalance } = useUsdcBalance();
-  const { refetchUserShares, isLoadingUserShares } = useUserShares();
-  const { refetchUserBalance, isLoadingUserBalance } = useUserBalance();
+  const { refetchUsdcBalance } = useUsdcBalance();
+  const { refetchUserShares } = useUserShares();
+  const { refetchUserBalance } = useUserBalance();
   const { refetchUserDeposits } = useUserDeposits();
-  const { refetchVaultBalance, isLoadingVaultBalance } = useVaultBalance();
+  const { refetchVaultBalance } = useVaultBalance();
   const { previewByAssets } = usePreviewDeposit();
 
   const refreshData = useCallback(async () => {
@@ -76,67 +70,47 @@ export default function AppPage() {
   ]);
 
   const handleRefresh = useCallback(async () => {
-    // Add a small delay to allow the chain/indexer to catch up
     await new Promise((resolve) => setTimeout(resolve, 2000));
     await refreshData();
   }, [refreshData]);
 
   useEffect(() => {
-    const init = async () => {
-      await refreshData();
-    };
-    init();
+    // eslint-disable-next-line react-hooks/set-state-in-effect
+    refreshData();
   }, [refreshData]);
-
-  useEffect(() => {
-    document.documentElement.setAttribute("data-theme", theme);
-    localStorage.setItem("theme", theme);
-  }, [theme]);
 
   const fmt = (val: bigint | null) =>
     val
       ? parseFloat(formatUnits(val, USDC_DECIMALS)).toLocaleString(undefined, {
           minimumFractionDigits: 2,
-          maximumFractionDigits: 6,
+          maximumFractionDigits: 2,
         })
       : "0.00";
 
+  // Dummy analytics data based on Figma
+  const totalYield = userBalance && userDeposits ? userBalance - userDeposits : null;
+
   if (!isConnected) {
     return (
-      <div className="min-h-screen selection:bg-teal selection:text-black">
+      <div className="min-h-screen bg-background">
         <AppNavbar
-          tab={tab}
-          setTab={setTab}
           isConnected={isConnected}
           address={address}
           open={open}
-          theme={theme}
-          setTheme={setTheme}
         />
-        <div className="fixed inset-0 mesh-bg z-0" />
-        
-        <div className="relative z-10 pt-32 flex items-center justify-center p-6 min-h-screen">
-          <div className="glass-panel p-12 md:p-16 text-center max-w-xl w-full shadow-2xl">
-            <div className="w-20 h-20 bg-teal/10 rounded-[32px] flex items-center justify-center text-teal mx-auto mb-10 border border-teal/20">
-              <DashboardIcon />
-            </div>
-            <h1 className="text-4xl font-black mb-4 tracking-tight uppercase">Ready to Earn?</h1>
-            <p className="text-secondary text-lg mb-10 font-medium">
-              Securely connect your wallet to access your non-custodial yield dashboard.
+        <div className="pt-32 flex items-center justify-center p-6 min-h-screen relative overflow-hidden">
+          <div className="fintech-grid" />
+          <div className="premium-card text-center max-w-md w-full shadow-lg relative z-10">
+            <h1 className="text-2xl font-bold mb-3">Ready to Earn?</h1>
+            <p className="text-muted-foreground mb-8">
+              Connect your wallet to access your non-custodial yield dashboard.
             </p>
             <button
-              className="btn-gradient w-full !text-lg !py-5"
+              className="btn-primary w-full"
               onClick={() => open()}
             >
-              Connect Securely
+              Connect Wallet
             </button>
-            <div className="mt-10 flex justify-center gap-8 text-[10px] font-black uppercase tracking-[0.3em] text-micro">
-              <span>Mainnet Security</span>
-              <span>•</span>
-              <span>Zero Fees</span>
-              <span>•</span>
-              <span>Instant Exit</span>
-            </div>
           </div>
         </div>
       </div>
@@ -144,111 +118,164 @@ export default function AppPage() {
   }
 
   return (
-    <div className="min-h-screen selection:bg-teal selection:text-black">
-      <AppNavbar
-        tab={tab}
-        setTab={setTab}
-        isConnected={isConnected}
-        address={address}
-        open={open}
-        theme={theme}
-        setTheme={setTheme}
-      />
-      
-      <div className="fixed inset-0 mesh-bg z-0" />
+    <div className="flex h-screen bg-background overflow-hidden">
+      <Sidebar tab={tab} setTab={(t) => { setTab(t); setIsSidebarOpen(false); }} isOpen={isSidebarOpen} onClose={() => setIsSidebarOpen(false)} />
 
-      <main className="relative z-10 max-w-7xl mx-auto px-6 pt-32 pb-24">
-        {tab === "stats" ? (
-          <StatsTab
-            vaultBalance={vaultBalance}
-            userBalance={userBalance}
-            userShares={userShares}
-            isLoadingVaultBalance={isLoadingVaultBalance}
-            isLoadingUserBalance={isLoadingUserBalance}
-            isLoadingUserShares={isLoadingUserShares}
-            address={address}
-            fmt={fmt}
-          />
-        ) : (
-          <div className="space-y-12">
-            <BalanceCards
-              usdcBalance={usdcBalance}
-              userBalance={userBalance}
-              userShares={userShares}
-              isLoadingUsdcBalance={isLoadingUsdcBalance}
-              isLoadingUserBalance={isLoadingUserBalance}
-              isLoadingUserShares={isLoadingUserShares}
-            />
+      <main className="flex-1 overflow-y-auto relative flex flex-col">
+        <div className="fintech-grid" />
+        
+        {/* Mobile Header */}
+        <div className="lg:hidden flex items-center justify-between p-4 border-b border-border bg-background/80 backdrop-blur-xl sticky top-0 z-40">
+           <div className="flex items-center gap-3">
+             <Logo />
+             <span className="font-bold text-lg tracking-tight text-foreground">YieldSave</span>
+           </div>
+           <button onClick={() => setIsSidebarOpen(true)} className="p-2 text-muted-foreground hover:text-foreground">
+             <Menu className="w-6 h-6" />
+           </button>
+        </div>
 
-            <div className="grid lg:grid-cols-12 gap-12 items-start">
-              <div className="lg:col-span-7">
-                <div className="glass-panel p-10 border-white/[0.05]">
-                  <ActionTabs activeTab={tab} setActiveTab={setTab} />
-                  
-                  <div className="mt-10">
-                    {tab === "deposit" && (
-                      <DepositForm
-                        usdcBalance={usdcBalance}
-                        exchangeRate={exchangeRate}
-                        onSuccess={handleRefresh}
-                        isConnected={isConnected}
-                      />
-                    )}
-                    {tab === "withdraw" && (
-                      <WithdrawForm
-                        userShares={userShares}
-                        userDeposits={userDeposits}
-                        onSuccess={handleRefresh}
-                        isConnected={isConnected}
-                      />
-                    )}
-                    {tab === "rewards" && (
-                      <RewardsTab
-                        userShares={userShares}
-                        userBalance={userBalance}
-                        userDeposits={userDeposits}
-                        isLoadingUserShares={isLoadingUserShares}
-                        fmt={fmt}
-                      />
-                    )}
+        <div className="p-4 sm:p-8 lg:p-12 flex-1 relative z-10">
+        {tab === "deposit" ? (
+          <div className="max-w-6xl mx-auto space-y-8">
+            {/* Top Stats Section */}
+            <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+              {/* Main Balance Card */}
+              <div className="lg:col-span-2 premium-card flex flex-col justify-between">
+                <div>
+                  <div className="flex justify-between items-start mb-6">
+                    <p className="text-sm font-semibold text-muted-foreground uppercase tracking-wider">
+                      Total Portfolio Balance
+                    </p>
+                    <div className="bg-success/10 text-success text-xs font-bold px-3 py-1 rounded-md flex items-center gap-1">
+                      <span>+14.2% APY</span>
+                    </div>
+                  </div>
+                  <h2 className="text-5xl font-bold text-foreground">
+                    ${fmt(userBalance)}
+                  </h2>
+                </div>
+                <div className="mt-8 flex justify-between items-end">
+                  <div>
+                    <p className="text-sm text-muted-foreground mb-1">Total Yield Earned</p>
+                    <p className="text-2xl font-bold text-success">
+                      +${totalYield !== null && totalYield > 0 ? fmt(totalYield) : "0.00"}
+                    </p>
+                  </div>
+                  {/* Mock Chart Area */}
+                  <div className="w-1/2 h-16 flex items-end gap-1 opacity-80">
+                    {[30, 45, 25, 60, 40, 75, 50, 90].map((h, i) => (
+                      <div key={i} className="flex-1 bg-primary rounded-t-sm" style={{ height: `${h}%` }}></div>
+                    ))}
                   </div>
                 </div>
               </div>
 
-              <div className="lg:col-span-5 space-y-12">
-                <div className="glass-panel p-10 border-teal/10">
-                  <h3 className="text-xl font-black mb-6 uppercase tracking-widest flex items-center gap-3">
-                    <StatsIcon /> Network Pulse
-                  </h3>
-                  <StatsGrid
-                    vaultBalance={vaultBalance}
-                    isLoadingVaultBalance={isLoadingVaultBalance}
+              {/* Analytics Overview */}
+              <div className="premium-card flex flex-col">
+                <h3 className="text-lg font-bold text-foreground mb-6">Analytics Overview</h3>
+                <div className="space-y-6 flex-1">
+                  <div>
+                    <p className="text-sm text-muted-foreground mb-1">Current APY</p>
+                    <div className="flex items-center justify-between">
+                      <p className="text-2xl font-bold text-foreground">14.2%</p>
+                      <div className="w-16 h-8 flex items-end gap-1">
+                        <div className="flex-1 bg-success rounded-t-sm h-[40%]"></div>
+                        <div className="flex-1 bg-success rounded-t-sm h-[70%]"></div>
+                        <div className="flex-1 bg-success rounded-t-sm h-[100%]"></div>
+                      </div>
+                    </div>
+                  </div>
+                  <div className="h-px bg-border"></div>
+                  <div>
+                    <p className="text-sm text-muted-foreground mb-1">Vault TVL</p>
+                    <p className="text-2xl font-bold text-foreground">${fmt(vaultBalance)}</p>
+                  </div>
+                  <div className="h-px bg-border"></div>
+                  <div>
+                    <p className="text-sm text-muted-foreground mb-1">Earnings This Month</p>
+                    <p className="text-2xl font-bold text-success">+$0.00</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* Deposit & Withdraw Side by Side */}
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+              <div className="premium-card p-0 overflow-hidden">
+                <div className="p-6 border-b border-border">
+                  <h3 className="text-lg font-bold">Deposit</h3>
+                </div>
+                <div className="p-6">
+                  <DepositForm
+                    usdcBalance={usdcBalance}
+                    exchangeRate={exchangeRate}
+                    onSuccess={handleRefresh}
+                    isConnected={isConnected}
                   />
                 </div>
-                
-                <div className="glass-panel p-10 border-gold/10">
-                  <h3 className="text-xl font-black mb-6 uppercase tracking-widest flex items-center gap-3">
-                    <EarnIcon /> Protocol Status
-                  </h3>
-                  <div className="space-y-4 text-sm font-medium text-secondary">
-                    <div className="flex justify-between items-center p-4 bg-white/[0.02] rounded-xl border border-white/[0.05]">
-                      <span>Protocol Fee</span>
-                      <span className="text-primary font-bold">5% (Yield Only)</span>
+              </div>
+              <div className="premium-card p-0 overflow-hidden">
+                <div className="p-6 border-b border-border">
+                  <h3 className="text-lg font-bold">Withdraw</h3>
+                </div>
+                <div className="p-6">
+                  <WithdrawForm
+                    userShares={userShares}
+                    userDeposits={userDeposits}
+                    onSuccess={handleRefresh}
+                    isConnected={isConnected}
+                  />
+                </div>
+              </div>
+            </div>
+
+            {/* Recent Activity */}
+            <div className="premium-card">
+              <div className="flex justify-between items-center mb-6">
+                <h3 className="text-lg font-bold">Recent Activity</h3>
+                <button className="text-primary text-sm font-semibold hover:underline">View All</button>
+              </div>
+              <div className="space-y-4">
+                <div className="flex items-center justify-between p-4 bg-muted/50 rounded-lg">
+                  <div className="flex items-center gap-4">
+                    <div className="w-10 h-10 rounded-lg bg-success/20 text-success flex items-center justify-center">
+                      ↓
                     </div>
-                    <div className="flex justify-between items-center p-4 bg-white/[0.02] rounded-xl border border-white/[0.05]">
-                      <span>Network</span>
-                      <span className="text-teal font-bold">Base Sepolia</span>
+                    <div>
+                      <p className="font-bold text-foreground">Deposit to Vault</p>
+                      <p className="text-xs text-muted-foreground">Today, 14:30</p>
                     </div>
-                    <div className="flex justify-between items-center p-4 bg-white/[0.02] rounded-xl border border-white/[0.05]">
-                      <span>Exit Liquidity</span>
-                      <span className="text-teal font-bold">Instant ✓</span>
+                  </div>
+                  <div className="text-right">
+                    <p className="font-bold text-foreground">+50,000 USDC</p>
+                    <p className="text-xs text-muted-foreground">Confirmed</p>
+                  </div>
+                </div>
+                <div className="flex items-center justify-between p-4 bg-muted/50 rounded-lg">
+                  <div className="flex items-center gap-4">
+                    <div className="w-10 h-10 rounded-lg bg-primary/20 text-primary flex items-center justify-center">
+                      ◈
                     </div>
+                    <div>
+                      <p className="font-bold text-foreground">Yield Distribution</p>
+                      <p className="text-xs text-muted-foreground">Yesterday</p>
+                    </div>
+                  </div>
+                  <div className="text-right">
+                    <p className="font-bold text-success">+$142.50</p>
+                    <p className="text-xs text-muted-foreground">Added</p>
                   </div>
                 </div>
               </div>
             </div>
           </div>
+        ) : (
+          <div className="flex flex-col items-center justify-center h-full text-muted-foreground">
+            <p>Section Under Construction</p>
+          </div>
         )}
+        </div>
       </main>
     </div>
   );

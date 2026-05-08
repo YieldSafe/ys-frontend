@@ -1,213 +1,184 @@
-@import url('https://fonts.googleapis.com/css2?family=Dosis:wght@200;300;400;500;600;700;800&family=Quicksand:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;700&display=swap');
-
 @import "tailwindcss";
+
 @config "../tailwind.config.ts";
 
 :root {
-  --bg-deep: #030408;
-  --bg-base: #05060B;
-  --bg-surface: rgba(10, 14, 23, 0.7);
-  --bg-elevated: rgba(18, 24, 38, 0.8);
-  --border: rgba(255, 255, 255, 0.06);
-  --border-bright: rgba(255, 255, 255, 0.12);
-  
-  --accent-teal: #00F5FF;
-  --accent-teal-glow: rgba(0, 245, 255, 0.4);
-  --accent-gold: #FFD700;
-  --accent-gold-glow: rgba(255, 215, 0, 0.3);
-  --accent-purple: #9D00FF;
-  
-  --text-primary: #FFFFFF;
-  --text-secondary: #A0AEC0;
-  --text-muted: #718096;
-  --text-micro: #4A5568;
-  
-  --glass-blur: blur(16px);
-  --glass-border: 1px solid rgba(255, 255, 255, 0.08);
-  --shadow-premium: 0 20px 40px rgba(0, 0, 0, 0.4);
+  --background: #FAFAFA;
+  --foreground: #111827;
+
+  --card: #FFFFFF;
+  --card-foreground: #111827;
+
+  --primary: #007AFF;
+  --primary-foreground: #FFFFFF;
+
+  --success: #00E070;
+  --success-foreground: #FFFFFF;
+
+  --border: #E5E7EB;
+  --input: #F3F4F6;
+
+  --muted: #F3F4F6;
+  --muted-foreground: #6B7280;
+
+  --radius-sm: 8px;
+  --radius-md: 12px;
+  --radius-lg: 16px;
+  --radius-xl: 24px;
 }
 
-[data-theme="light"] {
-  --bg-deep: #F8FAFC;
-  --bg-base: #FFFFFF;
-  --bg-surface: rgba(255, 255, 255, 0.85);
-  --bg-elevated: rgba(241, 245, 249, 0.95);
-  --border: rgba(0, 0, 0, 0.06);
-  --border-bright: rgba(0, 0, 0, 0.12);
-  
-  --accent-teal: #0D9488;
-  --accent-teal-glow: rgba(13, 148, 136, 0.2);
-  --accent-gold: #D97706;
-  --accent-gold-glow: rgba(217, 119, 6, 0.15);
-  
-  --text-primary: #0F172A;
-  --text-secondary: #475569;
-  --text-muted: #64748B;
-  --text-micro: #94A3B8;
+[data-theme="dark"] {
+  --background: #0B0E14;
+  --foreground: #F9FAFB;
+
+  --card: #151821;
+  --card-foreground: #F9FAFB;
+
+  --primary: #007AFF;
+  --primary-foreground: #FFFFFF;
+
+  --success: #00C853;
+  --success-foreground: #FFFFFF;
+
+  --border: #2D3243;
+  --input: #1F2433;
+
+  --muted: #1F2433;
+  --muted-foreground: #9CA3AF;
+}
+
+@theme {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-success: var(--success);
+  --color-success-foreground: var(--success-foreground);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
 }
 
 @layer base {
-  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  *,
+  *::before,
+  *::after {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+  }
 
-  html { scroll-behavior: smooth; }
+  html {
+    scroll-behavior: smooth;
+  }
 
   body {
-    font-family: "Quicksand", sans-serif;
-    background: var(--bg-base);
-    color: var(--text-primary);
-    line-height: 1.6;
-    transition: background 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-    overflow-x: hidden;
+    background-color: var(--background);
+    color: var(--foreground);
+    line-height: 1.5;
+    transition: background-color 0.3s ease, color 0.3s ease;
+    -webkit-font-smoothing: antialiased;
   }
 
-  h1, h2, h3, h4, h5, h6 { 
-    font-family: "Dosis", sans-serif; 
-    font-weight: 700; 
-    letter-spacing: 0.02em;
-    color: var(--text-primary);
-    text-transform: uppercase;
-  }
-
-  a { 
-    color: inherit; 
-    text-decoration: none; 
-    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  a {
+    color: inherit;
+    text-decoration: none;
+    transition: all 0.2s ease;
   }
 }
 
 @layer components {
-  /* Compiling manually to avoid @apply issues with custom non-standard utilities */
-  .feature-card {
-    background: var(--bg-surface);
-    backdrop-filter: var(--glass-blur);
-    -webkit-backdrop-filter: var(--glass-blur);
-    border: var(--glass-border);
-    border-radius: 28px;
-    box-shadow: var(--shadow-premium);
-    @apply p-8 transition-all duration-500 hover:scale-[1.02] hover:bg-white/[0.03];
-    border-color: var(--border);
-  }
-
-  .faq-card {
-    background: var(--bg-surface);
-    backdrop-filter: var(--glass-blur);
-    -webkit-backdrop-filter: var(--glass-blur);
-    border: var(--glass-border);
-    box-shadow: var(--shadow-premium);
-    @apply !rounded-2xl transition-all duration-300;
-    border: none;
-    background-color: rgba(255, 255, 255, 0.02);
-  }
-
-  .stat-box {
-    background: var(--bg-surface);
-    backdrop-filter: var(--glass-blur);
-    -webkit-backdrop-filter: var(--glass-blur);
-    border: var(--glass-border);
-    border-radius: 28px;
-    box-shadow: var(--shadow-premium);
-    @apply p-8 text-center flex flex-col items-center justify-center;
-  }
-
-  .nav-glass {
-    background: rgba(5, 6, 11, 0.75);
-    backdrop-filter: blur(20px);
-    -webkit-backdrop-filter: blur(20px);
-    border-bottom: 1px solid var(--border);
-  }
-
-  .btn-gradient {
-    @apply relative overflow-hidden px-8 py-4 rounded-2xl font-bold transition-all duration-500 flex items-center justify-center gap-2;
-    background: linear-gradient(135deg, var(--accent-teal), #00A3FF);
-    color: #000;
-    box-shadow: 0 10px 30px -10px var(--accent-teal-glow);
-  }
-
-  .btn-gradient:hover {
-    transform: translateY(-3px);
-    box-shadow: 0 20px 40px -10px var(--accent-teal-glow);
+  /* Utility for premium buttons */
+  .btn-primary {
+    @apply bg-primary text-primary-foreground font-semibold px-6 py-3 rounded-lg shadow-sm hover:opacity-90 transition-all flex items-center justify-center gap-2;
   }
 
   .btn-outline {
-    @apply relative px-8 py-4 rounded-2xl font-bold transition-all duration-300 border-2 flex items-center justify-center gap-2;
-    border-color: var(--border-bright);
-    background: transparent;
-    color: var(--text-primary);
+    @apply bg-transparent text-foreground font-semibold px-6 py-3 rounded-lg border-2 border-border hover:bg-muted transition-all flex items-center justify-center gap-2;
   }
 
-  .btn-outline:hover {
-    border-color: var(--accent-teal);
-    color: var(--accent-teal);
-    background: var(--accent-teal-glow);
+  .btn-glass {
+    @apply bg-white/10 dark:bg-white/5 backdrop-blur-md text-foreground font-semibold px-6 py-3 rounded-lg hover:bg-white/20 transition-all flex items-center justify-center gap-2;
   }
 
-  .feature-card:hover {
-    border-color: var(--accent-teal);
+  /* Input fields */
+  .premium-input {
+    @apply bg-input text-foreground border border-transparent rounded-lg px-4 py-3 w-full focus:outline-none focus:border-primary transition-colors;
   }
 
-  .text-glow {
-    text-shadow: 0 0 15px var(--accent-teal-glow);
+  /* Cards */
+  .premium-card {
+    @apply bg-card text-card-foreground border border-border rounded-xl shadow-sm p-6 transition-all;
   }
 
-  .mesh-bg {
-    position: absolute;
-    top: 0; left: 0; right: 0; bottom: 0;
-    background: 
-      radial-gradient(circle at 10% 20%, rgba(157, 0, 255, 0.05) 0%, transparent 50%),
-      radial-gradient(circle at 90% 80%, rgba(0, 245, 255, 0.08) 0%, transparent 50%);
-    z-index: -1;
+  .premium-glass-nav {
+    @apply fixed top-0 w-full z-50 bg-background/80 backdrop-blur-xl border-b border-border;
   }
 
-  .faq-wrapper {
-    @apply space-y-4 max-w-3xl mx-auto;
-  }
-
-  .faq-card.open {
-    @apply border-l-4;
-    background-color: rgba(255, 255, 255, 0.05);
-    border-left-color: var(--accent-teal);
-  }
-
-  .faq-header {
-    @apply flex justify-between items-center w-full p-6 text-left font-bold text-lg cursor-pointer;
-    font-family: "Dosis", sans-serif;
-  }
-
-  .faq-body {
-    max-height: 0;
+  /* Premium Fintech Grid Background */
+  .fintech-grid {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    z-index: 0;
+    pointer-events: none;
     overflow: hidden;
-    transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
-    @apply px-6 opacity-0;
   }
 
-  .faq-card.open .faq-body {
-    max-height: 400px;
-    padding-bottom: 24px;
-    opacity: 1;
+  .fintech-grid::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background-image: 
+      linear-gradient(to right, var(--color-foreground) 1px, transparent 1px),
+      linear-gradient(to bottom, var(--color-foreground) 1px, transparent 1px);
+    background-size: 100px 100px;
+    opacity: 0.06;
+    mask-image: radial-gradient(circle at top center, black 10%, transparent 80%);
+    -webkit-mask-image: radial-gradient(circle at top center, black 10%, transparent 80%);
   }
 
-  .stats-grid-container {
-    @apply grid grid-cols-1 md:grid-cols-3 gap-6;
-  }
-
-  .stat-value {
-    @apply text-5xl font-extrabold mb-2;
-    font-family: "Dosis", sans-serif;
-  }
-
-  .stat-label {
-    @apply text-xs uppercase tracking-widest font-bold;
-    color: var(--text-muted);
+  .fintech-grid::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background-image: url('data:image/svg+xml,%3Csvg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg"%3E%3Cfilter id="noiseFilter"%3E%3CfeTurbulence type="fractalNoise" baseFrequency="0.65" numOctaves="3" stitchTiles="stitch"/%3E%3C/filter%3E%3Crect width="100%25" height="100%25" filter="url(%23noiseFilter)"/%3E%3C/svg%3E');
+    opacity: 0.02;
+    mix-blend-mode: overlay;
   }
 }
 
-@keyframes float {
-  0%, 100% { transform: translateY(0); }
-  50% { transform: translateY(-20px); }
+@keyframes fadeUp {
+  from {
+    opacity: 0;
+    transform: translateY(2rem);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-fade-up {
+  animation: fadeUp 1s cubic-bezier(0.16, 1, 0.3, 1) forwards;
 }
 
 @keyframes drawPath {
-  0% { stroke-dasharray: 0, 1000; opacity: 0; }
-  50% { stroke-dasharray: 1000, 0; opacity: 1; }
-  100% { stroke-dasharray: 1000, 0; opacity: 0; }
+  0% {
+    stroke-dasharray: 0, 1000;
+    opacity: 0;
+  }
+  50% {
+    stroke-dasharray: 1000, 0;
+    opacity: 1;
+  }
+  100% {
+    stroke-dasharray: 1000, 0;
+    opacity: 0;
+  }
 }

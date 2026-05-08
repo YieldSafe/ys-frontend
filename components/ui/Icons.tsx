@@ -1,13 +1,10 @@
 "use client";
 import React from "react";
-import { Shield, Sun, Moon, ArrowUpRight, TrendingUp, Wallet, ArrowDownCircle, BarChart3, HelpCircle, LayoutDashboard } from "lucide-react";
+import { Sun, Moon, ArrowUpRight, TrendingUp, Wallet, ArrowDownCircle, BarChart3, HelpCircle, LayoutDashboard, Landmark } from "lucide-react";
 // logo component
 export const Logo = () => (
-  <div className="relative flex items-center justify-center group">
-    <div className="absolute inset-0 bg-teal/20 blur-xl group-hover:bg-teal/40 transition-all rounded-full" />
-    <div className="relative w-10 h-10 bg-gradient-to-br from-teal to-blue-500 rounded-xl flex items-center justify-center shadow-lg transform group-hover:rotate-6 transition-transform">
-      <Shield className="w-6 h-6 text-black stroke-[2.5]" />
-    </div>
+  <div className="relative flex items-center justify-center text-primary">
+    <Landmark className="w-8 h-8 stroke-[2]" />
   </div>
 );
 
