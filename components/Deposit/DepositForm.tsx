@@ -88,26 +88,25 @@ export const DepositForm = ({
         })
       : "0.00";
 
-  const labelCls = "text-[var(--text-muted)] text-sm";
-  const valueCls = "font-mono font-bold text-sm text-[var(--text-primary)]";
+  const labelCls = "text-muted-foreground text-sm";
+  const valueCls = "font-mono font-bold text-sm text-foreground";
   const infoRow = "flex justify-between items-center py-2";
 
   return (
-    <div className="bg-[var(--bg-surface)] border border-[var(--border)] rounded-2xl p-4 sm:p-6 shadow-sm">
-      <div className="flex justify-between items-center mb-6">
-        <h3 className="font-display text-xl font-bold">Deposit USDC</h3>
-        <div className="text-xs font-mono text-[var(--text-muted)] bg-[var(--bg-elevated)] px-2 py-1 rounded">
+    <div className="space-y-6">
+      <div className="flex justify-between items-center">
+        <div className="text-xs font-mono text-muted-foreground bg-muted px-2 py-1 rounded">
           Balance: {usdcBalance ? parseFloat(formatUnits(usdcBalance, USDC_DECIMALS)).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 }) : "0.00"}
         </div>
       </div>
 
-      <div className="relative mb-6">
+      <div className="relative">
         <input
           type="number"
           min="0"
           onWheel={(e) => (e.target as HTMLInputElement).blur()}
           placeholder="0.00"
-          className="w-full bg-[var(--bg-elevated)] border border-[var(--border)] rounded-xl px-4 py-3 md:py-4 text-xl md:text-2xl font-mono focus:outline-none focus:border-teal transition-all pr-20"
+          className="premium-input text-2xl pr-24 py-4 font-mono font-bold"
           value={depositAmt}
           onChange={(e) => {
             const val = e.target.value;
@@ -116,20 +115,20 @@ export const DepositForm = ({
         />
         <div className="absolute right-4 top-1/2 -translate-y-1/2 flex items-center gap-2">
           <button
-            className="text-[0.65rem] font-bold uppercase tracking-wider text-teal bg-[var(--glow-teal)] px-2 py-1 rounded hover:brightness-110"
+            className="text-[0.65rem] font-bold uppercase tracking-wider text-primary bg-primary/10 px-2 py-1 rounded hover:bg-primary/20 transition-colors"
             onClick={() =>
               setDepositAmt(formatUnits(usdcBalance || BigInt(0), USDC_DECIMALS))
             }
           >
             MAX
           </button>
-          <span className="font-bold text-sm text-[var(--text-muted)]">
+          <span className="font-bold text-sm text-muted-foreground">
             USDC
           </span>
         </div>
       </div>
 
-      <div className="bg-[var(--bg-elevated)] rounded-xl p-4 mb-6">
+      <div className="bg-muted/50 rounded-lg p-4">
         <div className="mt-1">
           <div className={infoRow}>
             <span className={labelCls}>You will receive</span>
@@ -158,14 +157,14 @@ export const DepositForm = ({
       </div>
 
       <button
-        className="w-full py-3 md:py-4 rounded-xl bg-teal text-white font-bold text-base md:text-lg cursor-pointer border-none transition-all hover:shadow-[0_0_20px_rgba(0,245,255,0.3)] disabled:opacity-50 disabled:cursor-not-allowed"
+        className="btn-primary w-full !py-4 text-lg"
         onClick={handleDepositFlow}
         disabled={flowStatus !== "idle" || !depositAmt || parseFloat(depositAmt) <= 0}
       >
         {flowStatus === "approving" ? "1/2 Approving USDC..." : flowStatus === "depositing" ? "2/2 Depositing..." : "Deposit USDC"}
       </button>
 
-      <p className="text-[var(--text-micro)] text-center mt-4 leading-relaxed">
+      <p className="text-xs text-muted-foreground text-center leading-relaxed px-4">
         By depositing, you agree to the protocol terms. Your USDC will be
         deployed to Aave V3. You can withdraw anytime.
       </p>

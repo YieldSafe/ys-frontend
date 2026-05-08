@@ -1,6 +1,6 @@
 "use client";
 import React from "react";
-import { Tab } from "../ui/AppNavbar";
+import { Tab } from "../ui/Sidebar";
 import { DepositIcon, WithdrawIcon, EarnIcon } from "../ui/Icons";
 
 interface ActionTabsProps {
